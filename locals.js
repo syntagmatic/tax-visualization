@@ -1,9 +1,10 @@
-var init2 = function() {
+var init2, randomPath;
+init2 = function() {
+  var abs, acos, asin, atan, c, ceil, cheight, circle, clear, cos, createAxis, cwidth, ellipse, exp, floor, getColor, height, image, log, max, min, paper, path, pi, pow, random, rect, round, set, sin, sqrt, tan, text, width;
   paper = Raphael("canvas", "100%", "100%");
   width = "100%";
   height = "100%";
   c = paper.rect(0, 0, "100%", "100%", 0).attr({
-    fill: "#efefef",
     stroke: "none"
   });
   Raphael.getColor.reset();
@@ -118,7 +119,7 @@ var init2 = function() {
       labels: labels
     };
   };
-  Raphael.el.anim = function(obj) {
+  return Raphael.el.anim = function(obj) {
     var duration;
     if (obj.duration !== void 0) {
       duration = obj.duration;
@@ -128,20 +129,20 @@ var init2 = function() {
       return this.animate(obj);
     }
   };
-  randomPath = function(length, j, dotsy) {
-    var i, random_path, x, y;
-    random_path = "";
-    x = 10;
-    y = 0;
-    dotsy[j] = dotsy[j] || [];
-    for (i = 0; (0 <= length ? i <= length : i >= length); (0 <= length ? i += 1 : i -= 1)) {
-      dotsy[j][i] = round(random() * 200);
-      if (i) {
-        random_path += "C" + [x + 10, y, (x += 20) - 10, (y = 240 - dotsy[j][i]), x, y];
-      } else {
-        random_path += "M" + [10, (y = 240 - dotsy[j][i])];
-      }
+};
+randomPath = function(length, j, dotsy) {
+  var i, random_path, x, y;
+  random_path = "";
+  x = 10;
+  y = 0;
+  dotsy[j] = dotsy[j] || [];
+  for (i = 0; (0 <= length ? i <= length : i >= length); (0 <= length ? i += 1 : i -= 1)) {
+    dotsy[j][i] = round(random() * 200);
+    if (i) {
+      random_path += "C" + [x + 10, y, (x += 20) - 10, (y = 240 - dotsy[j][i]), x, y];
+    } else {
+      random_path += "M" + [10, (y = 240 - dotsy[j][i])];
     }
-    return random_path;
-  };
+  }
+  return random_path;
 };

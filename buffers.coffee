@@ -81,7 +81,7 @@ buffers =
       points.push point(x*(width/num/inc) + ox, y*zoom + oy)
             '''
 
-$(document).ready ->
+$ ->
   flipper = (button, panel, showmsg, hidemsg) ->
     $(button).toggle( ->
       $(this).html hidemsg
@@ -104,7 +104,7 @@ $(document).ready ->
           "Tutorial",
           "Hide Tutorial")
   flipper("#out",
-          "#output_window",
+          "#canvas",
           "Output",
           "Hide Output")
 
@@ -117,13 +117,20 @@ $(document).ready ->
   buffer = $("#buffers").val()
   $("#code").html buffers[buffer]
 
+  # Hacks
+
+  $('#console').height($(window).height()).fadeIn(200)
+  $('#output').css 'max-height': $(window).height() - 144
+
+  # End hacks
+
   dvc()
 
-  window.expose = (item) ->
+  window.expose = (x) ->
     str = ""
     for i in [0..13]
-      str += "<b>" + (nab('name', item, i)) + "</b>: " + (nab('value', item, i)) + "<br/>"
-    $('#output_window').html 
+      str += "<b>" + (nab('name', x, i)) + "</b>: " + (nab('value', x, i)) + "<br/>"
+    $('#canvas').html str
 
   window.taxes =
     budgetAccount:
@@ -310,4 +317,3 @@ $(document).ready ->
       myCost: 0
       perCapita: 0
       gdpPercent: 0
-

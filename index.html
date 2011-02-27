@@ -69,17 +69,16 @@
 </script>
  
 </head>
-<body onload="init();init2()">
+<body onload="init();init2();">
 <div id="canvas"></div>
-<div id="text">
-<textarea id="code"></textarea>
 <div id="console">
   <div id="output"></div>
-  <textarea id="input" class="input" wrap="off" onkeydown="inputKeydown(event)" rows="1"></textarea>
+  <div id="input_wrap">
+    <textarea id="input" class="input" wrap="off" onkeydown="inputKeydown(event)" rows="1"></textarea>
+  </div>
 </div>
-<div id="output_window">
-
-</div>
+<div id="text">
+<textarea id="code"></textarea>
 <div id="tutorial">
 <p>Data Visualization Competition<br/>
 <pre class="code">
