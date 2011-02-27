@@ -123,4 +123,191 @@ $(document).ready ->
     str = ""
     for i in [0..13]
       str += "<b>" + (nab('name', item, i)) + "</b>: " + (nab('value', item, i)) + "<br/>"
-    $('#output_window').html str
+    $('#output_window').html 
+
+  window.taxes =
+    budgetAccount:
+      year: 2010
+      income: 50000
+      exacttax: 0
+      function: 0
+      subfunction: 0
+      agency: 0
+      bureau: 0
+      account: 0
+      functionId: 1000
+      subfunctionId: 1000
+      agencyId: 1000
+      bureauId: 1000
+      accountId: 1000
+      adjustInflationYear: 2010
+      type: 0
+      sortby: 0
+      sortdir: 0
+      filing: 0
+      selfEmployed: 0
+      showExtra: 0
+      showChange: 0
+      spendingType: 1
+      onBudget: true
+      total: 0
+      deltaTotal: 0
+      deltaPercent: 0
+      myCost: 0
+      perCapita: 0
+      gdpPercent: 0
+    budgetAggrigate:
+      group:
+        function:
+          dimensionName: ""
+          dimensionId: 0
+          spendingType: 0
+          total: 0
+          deltaTotal: 0
+          deltaPercent: 0
+          myCost: 0
+        subfunction:
+          dimensionName: ""
+          dimensionId: 0
+          spendingType: 0
+          total: 0
+          deltaTotal: 0
+          deltaPercent: 0
+          myCost: 0
+        agency:
+          dimensionName: ""
+          dimensionId: 0
+          spendingType: 0
+          total: 0
+          deltaTotal: 0
+          deltaPercent: 0
+          myCost: 0
+        bureau:
+          dimensionName: ""
+          dimensionId: 0
+          spendingType: 0
+          total: 0
+          deltaTotal: 0
+          deltaPercent: 0
+          myCost: 0
+      year: 2010
+      income: 50000
+      exacttax: 0
+      function: 0
+      subfunction: 0
+      agency: 0
+      bureau: 0
+      account: 0
+      functionId: 1000
+      subfunctionId: 1000
+      agencyId: 1000
+      bureauId: 1000
+      accountId: 1000
+      adjustInflationYear: 2010
+      type: 0
+      sortby: 0
+      sortdir: 0
+      filing: 0
+      selfEmployed: 0
+      showExtra: 0
+      showChange: 0
+      spendingType: 1
+      onBudget: true
+      total: 0
+      deltaTotal: 0
+      deltaPercent: 0
+      myCost: 0
+      perCapita: 0
+      gdpPercent: 0
+    receiptAccount =
+      year: 2010
+      exacttax: 0
+      category: 0
+      subcategory: 0
+      agency: 0
+      bureau: 0
+      account: 0
+      categoryId: 1000
+      subcategoryId: 1000
+      agencyId: 1000
+      bureauId: 1000
+      accountId: 1000
+      adjustInflationYear: 2010
+      type: 0
+      sortby: 0
+      sortdir: 0
+      filing: 0
+      selfEmployed: 0
+      showExtra: 0
+      showChange: 0
+      spendingType: 1
+      onBudget: true
+      total: 0
+      deltaTotal: 0
+      deltaPercent: 0
+      myCost: 0
+      perCapita: 0
+      gdpPercent: 0
+    receiptAggrigate:
+      group:
+        category:
+          dimensionName: ""
+          dimensionId: 0
+          spendingType: 0
+          total: 0
+          deltaTotal: 0
+          deltaPercent: 0
+          myCost: 0
+        subcategory:
+          dimensionName: ""
+          dimensionId: 0
+          spendingType: 0
+          total: 0
+          deltaTotal: 0
+          deltaPercent: 0
+          myCost: 0
+        agency:
+          dimensionName: ""
+          dimensionId: 0
+          spendingType: 0
+          total: 0
+          deltaTotal: 0
+          deltaPercent: 0
+          myCost: 0
+        bureau:
+          dimensionName: ""
+          dimensionId: 0
+          spendingType: 0
+          total: 0
+          deltaTotal: 0
+          deltaPercent: 0
+          myCost: 0
+      year: 2010
+      exacttax: 0
+      category: 0
+      subcategory: 0
+      agency: 0
+      bureau: 0
+      account: 0
+      categoryId: 1000
+      subcategoryId: 1000
+      agencyId: 1000
+      bureauId: 1000
+      accountId: 1000
+      adjustInflationYear: 2010
+      type: 0
+      sortby: 0
+      sortdir: 0
+      filing: 0
+      selfEmployed: 0
+      showExtra: 0
+      showChange: 0
+      spendingType: 1
+      onBudget: true
+      total: 0
+      deltaTotal: 0
+      deltaPercent: 0
+      myCost: 0
+      perCapita: 0
+      gdpPercent: 0
+
