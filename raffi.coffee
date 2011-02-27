@@ -8,7 +8,7 @@ btn.onclick = ->
     coffee = CoffeeScript.compile cd.value
     (new Function("paper", "window", "document", "paper.clear();" + coffee)).call(paper, paper)
   catch e
-    alert(e.message || e)
+    printError(e.message || e)
 
 js.onclick = ->
   try
@@ -17,7 +17,7 @@ js.onclick = ->
     myWindow.document.write("<pre>" + coffee + "</pre>")
     myWindow.focus()
   catch e
-    alert(e.message || e)
+    printError(e.message || e)
 
 cl.onclick = ->
   paper.clear()
