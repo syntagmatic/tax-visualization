@@ -54,7 +54,7 @@ h1 {
 #console {
   background: #222;
   color: #ffcf6f;
-  font-size:13px;
+  font-size:11px;
   float: left;
   position: relative;
   text-align:left;
@@ -82,13 +82,15 @@ h1 {
   position:absolute;
   bottom:0;
   overflow:hidden;
-  font-size:13px;
+  font-size:11px;
   background: #234;
   color: #fdb;
   border: none;
+  overflow: auto;
 }
 #output {
   padding: 4px;
+  width: 312px;
   max-height: 515px;
   position:absolute;
   bottom:120px;
