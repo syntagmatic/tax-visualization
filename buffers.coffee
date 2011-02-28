@@ -153,12 +153,12 @@ $ ->
 
   setParams = (params) ->
     paramString = ""
-    counter = 0
+    i = 0
     for key, val of params
-      paramString += query(key, val, counter)
-      counter++
+      paramString += query(key, val, i)
+      i++
     if !paramDefaults[key] #default calls year
-      paramString += query("year", "2010")
+      paramString += query("year", "2010", 0)
     return paramString
 
   setType = (typeName) ->
@@ -180,6 +180,12 @@ $ ->
     if typeof data == 'string'
       xml = stringToXml(data)
     window.items = xml.getElementsByTagName('item')
+
+  nab = (method, account, attribute) ->
+    return items.item(account).attributes.item(attribute)[method]
+
+  methods = (account, attribute) ->
+    return items.item(account).attributes.item(attribute)
 
   window.expose = (x) ->
     str = ""
