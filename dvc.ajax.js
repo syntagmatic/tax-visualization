@@ -23,12 +23,6 @@ var Ajax = (function () {
     }
     function g(h, j) {
         f = "?";
-        paramDefaults = paramDefaults || {};
-        for (b in paramDefaults) {
-            if (paramDefaults.hasOwnProperty(b)) {
-                f += b + "=" + paramDefaults[b] + "&"
-            }
-        }
         var i = "json" + (++a);
         d[i] = function (k) {
             j(k);

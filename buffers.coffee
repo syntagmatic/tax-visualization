@@ -181,7 +181,7 @@ $ ->
       xml = stringToXml(data)
     window.items = xml.getElementsByTagName('item')
 
-  nab = (method, account, attribute) ->
+  window.nab = (method, account, attribute) ->
     return items.item(account).attributes.item(attribute)[method]
 
   methods = (account, attribute) ->
@@ -189,7 +189,7 @@ $ ->
 
   window.expose = (x) ->
     str = ""
-    for i in [0..13]
+    for i in [0..12]
       str += "<b>" + (nab('name', x, i)) + "</b>: " + (nab('value', x, i)) + "<br/>"
     $('#canvas').html str
 
