@@ -123,8 +123,9 @@ $ ->
   $('#output').css 'max-height': $(window).height() - 144
 
   # End hacks
-  
-  window.params =
+  window.taxes = {}
+
+  window.paramDefaults =
     year: 2010     # 1984 - 2015
     type: 0        # 0 - 3
     sortdir: false
@@ -138,42 +139,49 @@ $ ->
     subfunction: 0
     category: 0
     subcategory: 0
+  
+  call =
+    year: "?year=" + paramDefaults.year
+    type: "&type=" + paramDefaults.type
+    sortdir: "&sortdir=" + (paramDefaults.sortdir * 1)
+    filing: "&filing=" + paramDefaults.filing
+    showChange: "&showChange=" + (paramDefaults.showChange * 1)
+    showExtra: "&showExtra="  + (paramDefaults.showExtra * 1)
+    function: "&function=" + paramDefaults.function
+    subfunction: "&subfunction=" + paramDefaults.subfunction
+    category: "&category=" + paramDefaults.category
+    subcategory: "&subcategory=" + paramDefaults.subcategory
+    income: "&income=" + paramDefaults.income
+    budgetGroup: "&group=" + paramDefaults.budgetGroup[2]
+    receiptGroup: "&group=" + paramDefaults.receiptGroup[2]
 
-  window.dvc = (type) ->
-    base = "http://www.whatwepayfor.com/api/"
-    call = "?year=" + params.year +
-           "&type=" + params.type +
-           "&sortdir=" + (params.sortdir * 1) +
-           "&filing=" + params.filing +
-           "&showChange=" + (params.showChange * 1) +
-           "&showExtra="  + (params.showExtra * 1)
+  type =
+    budgetAccount: "getBudgetAccount/"
+    budgetTotal: "getBudgetAggregate/"
+    receiptAccount: "getReceiptAccount/"
+    receiptTotal: "getReceiptAggregate/"
 
+  setParams = (paramNames...) ->
+    paramString = ""
+    for param in paramNames
+      if call[param]
+        paramString += call[param]
+    if paramNames? #default calls year
+      paramString += call["year"]
+    return paramString
+
+  setType = (typeName) ->
     typeString = ""
-    switch type
-      when "budgetAccount"
-        typeString = "getBudgetAccount"
-        call += "&function=" + params.function +
-                "&subfunction=" + params.subfunction +
-                "&income=" + params.income
-      when "budgetAggregate"
-        typeString = "getBudgetAggregate"
-        call += "&function=" + params.function +
-                "&subfunction=" + params.subfunction +
-                "&income=" + params.income +
-                "&group=" + params.budgetGroup[2]
-      when "receiptAccount"
-        typeString = "getReceiptAccount"
-        call += "&category=" + params.category +
-                "&subcategory=" + params.subcategory
-      when "receiptAggregate"
-        typeString = "getReceiptAggregate"
-        call += "&category=" + params.category +
-                "&subcategory=" + params.subcategory +
-                "&group=" + params.receiptGroup[2]
-      else typeString = "getBudgetAccount"
-    typeString += "/"
-       
-    api  = base + typeString + call
+    if type[typeName]
+      typeString = type[typeName]
+    else #default calls budget account
+      typeString = type["budgetAccount"]
+    return typeString
+
+  window.getTaxes = (typeName, paramNames...) ->
+    base = "http://www.whatwepayfor.com/api/"
+    api  = base + setType(typeName) + setParams(paramNames...)
+    print api
     Ajax.get(api, success)
     
   success = (data) ->
