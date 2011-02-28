@@ -123,7 +123,6 @@ $ ->
   $('#output').css 'max-height': $(window).height() - 144
 
   # End hacks
-  window.taxes = {}
 
   window.paramDefaults =
     year: 2010     # 1984 - 2015
@@ -181,7 +180,6 @@ $ ->
   window.getTaxes = (typeName, paramNames...) ->
     base = "http://www.whatwepayfor.com/api/"
     api  = base + setType(typeName) + setParams(paramNames...)
-    print api
     Ajax.get(api, success)
     
   success = (data) ->
