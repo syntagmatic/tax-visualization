@@ -26,8 +26,8 @@ h1 {
 #canvas {
   height: 100%;
   text-align: left;
-  width: 100%;
-  position:absolute;
+  float: left;
+  margin-left: 20px;
 }
 #canvas b {
   color: #ddd;
@@ -36,7 +36,6 @@ h1 {
   position:absolute;
   top:20px;
   right:20px;
-  width:100%;
   text-align:right;
 }
 #code, #tutorial {

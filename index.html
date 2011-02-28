@@ -70,83 +70,83 @@
  
 </head>
 <body onload="init();init2();">
-<div id="canvas"></div>
 <div id="console">
   <div id="output"></div>
   <div id="input_wrap">
     <textarea id="input" class="input" wrap="off" onkeydown="inputKeydown(event)" rows="1"></textarea>
   </div>
 </div>
+<div id="canvas"></div>
 <div id="text">
-<textarea id="code"></textarea>
-<div id="tutorial">
-<p>Data Visualization Competition<br/>
-<pre class="code">
-<span># load data</span>
-dvc()
+  <textarea id="code"></textarea>
+  <div id="tutorial">
+  <p>Data Visualization Competition<br/>
+  <pre class="code">
+    <span># load data</span>
+    dvc()
 
-<span># get name, value</span>
-items.item(0).attributes.item(4).name
-items.item(0).attributes.item(4).value
-</pre>
-<p>Raphael Cheat Sheet<br/>
-<small><a href="http://raphaeljs.com/reference.html">Full Reference</a></small></p>
-<pre class="code">
-<span># floats</span>
-x, y, r, rx, ry, w, h
+    <span># get name, value</span>
+    items.item(0).attributes.item(4).name
+    items.item(0).attributes.item(4).value
+  </pre>
+  <p>Raphael Cheat Sheet<br/>
+  <small><a href="http://raphaeljs.com/reference.html">Full Reference</a></small></p>
+  <pre class="code">
+    <span># floats</span>
+    x, y, r, rx, ry, w, h
 
-<span># strings</span>
-url, str
+    <span># strings</span>
+    url, str
 
-<span># objects</span>
-circle(x,y,r)
-rect(x, y, w, h, r)
-ellipse(x, y, rx, ry)
-image(url, x, y, w, h)
-text(x, y, str)
+    <span># objects</span>
+    circle(x,y,r)
+    rect(x, y, w, h, r)
+    ellipse(x, y, rx, ry)
+    image(url, x, y, w, h)
+    text(x, y, str)
+  
+    <span># paths - use <a href="http://www.w3schools.com/svg/svg_path.asp">svg path</a> string format</span>
+    path("M10 10L90 90")
 
-<span># paths - use <a href="http://www.w3schools.com/svg/svg_path.asp">svg path</a> string format</span>
-path("M10 10L90 90")
+    <span># sets</span>
+    st = set()
+    st.push circle(x,y,r)
+  </pre>
 
-<span># sets</span>
-st = set()
-st.push circle(x,y,r)
-</pre>
+  <p>CoffeeScript Cheat Sheet<br/>
+  <small><a href="http://jashkenas.github.com/coffee-script/">Full Reference</a></small></p>
+  <pre class="code">
+    <span># assignment</span>
+    x = 4
 
-<p>CoffeeScript Cheat Sheet<br/>
-<small><a href="http://jashkenas.github.com/coffee-script/">Full Reference</a></small></p>
-<pre class="code">
-<span># assignment</span>
-x = 4
+    <span># functions</span>
+    mult = (a,b) -> a*b
 
-<span># functions</span>
-mult = (a,b) -> a*b
+    <span># arrays</span>
+    list = [1,2,3,4,5]
 
-<span># arrays</span>
-list = [1,2,3,4,5]
+    <span># objects</span>
+    sh =
+    circ: (x,y) -> circle(x,y,15)
+    sq: (x,y) -> rect(x,y,15,15)
 
-<span># objects</span>
-sh =
-  circ: (x,y) -> circle(x,y,15)
-  sq: (x,y) -> rect(x,y,15,15)
+    <span># new square at 75, 125</span>
+    sh.sq(75,125)
 
-<span># new square at 75, 125</span>
-sh.sq(75,125)
+    <span># array comprehensions</span>
+    circles = (sh.circ(25*x,200) for x in [1..10])
+  </pre>
 
-<span># array comprehensions</span>
-circles = (sh.circ(25*x,200) for x in [1..10])
-</pre>
-
-<p>Math</p>
-<pre class="code">
-sin pi/6 <span># 0.49999 ~ 1/2</span>
-acos 1/2 <span># 1.04719 ~ pi/3</span>
-random() <span># generate random number, 0-1</span>
-abs -5 <span># 5</span>
-pow(x,3) <span># x^3</span>
-floor 4.5 <span># 4</span>
-ceil 5.2 <span># 6</span>
-</pre>
+  <p>Math</p>
+  <pre class="code">
+    sin pi/6 <span># 0.49999 ~ 1/2</span>
+    acos 1/2 <span># 1.04719 ~ pi/3</span>
+    random() <span># generate random number, 0-1</span>
+    abs -5 <span># 5</span>
+    pow(x,3) <span># x^3</span>
+    floor 4.5 <span># 4</span>
+    ceil 5.2 <span># 6</span>
+  </pre>
 </div><!--tutorial-->
 <div id="buttons">
   <select id="buffers">
@@ -158,8 +158,8 @@ ceil 5.2 <span># 6</span>
   <button id="run" type="button">Graph it!</button>
   <button id="clear" type="button">Clear</button>
   <button id="tut" type="button">Tutorial</button>
-  <button id="cons" type="button">Console</button>
-  <button id="out" type="button">Output</button>
+ <!-- <button id="cons" type="button">Console</button>
+  <button id="out" type="button">Output</button> -->
   <button id="show" type="button">Code</button>
   <button id="js" type="button">Compile</button>
 </div>

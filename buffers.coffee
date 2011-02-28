@@ -226,7 +226,7 @@ $ ->
       myCost: 0
       perCapita: 0
       gdpPercent: 0
-    receiptAccount =
+    receiptAccount:
       year: 2010
       exacttax: 0
       category: 0
