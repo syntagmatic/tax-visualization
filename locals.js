@@ -1,7 +1,8 @@
 var init2, randomPath;
 init2 = function() {
-  var abs, acos, asin, atan, c, ceil, cheight, circle, clear, cos, createAxis, cwidth, ellipse, exp, floor, getColor, height, image, log, max, min, paper, path, pi, pow, random, rect, round, set, sin, sqrt, tan, text, width;
+  var c, cheight, cwidth, height, paper, width;
   paper = Raphael("canvas", "100%", "100%");
+  window.paper = paper;
   width = "100%";
   height = "100%";
   c = paper.rect(0, 0, "100%", "100%", 0).attr({
@@ -10,48 +11,48 @@ init2 = function() {
   Raphael.getColor.reset();
   cwidth = c.getBBox().width;
   cheight = c.getBBox().height;
-  abs = Math.abs;
-  acos = Math.acos;
-  asin = Math.asin;
-  atan = Math.atan;
-  ceil = Math.ceil;
-  cos = Math.cos;
-  exp = Math.exp;
-  floor = Math.floor;
-  log = Math.log;
-  max = Math.max;
-  min = Math.min;
-  pi = Math.PI;
-  pow = Math.pow;
-  random = Math.random;
-  round = Math.round;
-  sin = Math.sin;
-  sqrt = Math.sqrt;
-  tan = Math.tan;
-  circle = function(x, y, r) {
+  window.abs = Math.abs;
+  window.acos = Math.acos;
+  window.asin = Math.asin;
+  window.atan = Math.atan;
+  window.ceil = Math.ceil;
+  window.cos = Math.cos;
+  window.exp = Math.exp;
+  window.floor = Math.floor;
+  window.log = Math.log;
+  window.max = Math.max;
+  window.min = Math.min;
+  window.pi = Math.PI;
+  window.pow = Math.pow;
+  window.random = Math.random;
+  window.round = Math.round;
+  window.sin = Math.sin;
+  window.sqrt = Math.sqrt;
+  window.tan = Math.tan;
+  window.circle = function(x, y, r) {
     return paper.circle(x, y, r);
   };
-  rect = function(x, y, w, h, r) {
+  window.rect = function(x, y, w, h, r) {
     return paper.rect(x, y, w, h, r);
   };
-  ellipse = function(x, y, rx, ry) {
+  window.ellipse = function(x, y, rx, ry) {
     return paper.ellipse(x, y, rx, ry);
   };
-  image = function(url, x, y, w, h) {
+  window.image = function(url, x, y, w, h) {
     return paper.image(url, x, y, w, h);
   };
-  text = function(x, y, str) {
+  window.text = function(x, y, str) {
     return paper.text(x, y, str);
   };
-  path = function(str) {
+  window.path = function(str) {
     return paper.path(str);
   };
-  getColor = function() {
+  window.getColor = function() {
     return Raphael.getColor();
   };
-  set = paper.set;
-  clear = paper.clear;
-  createAxis = function(width, height, ticwidth) {
+  window.set = paper.set;
+  window.clear = paper.clear;
+  window.createAxis = function(width, height, ticwidth) {
     var axis, grid, i, inc, labels, o, ox, tic, xmarks, xtics, ymarks, ytics, _ref, _ref2;
     if (width === "100%") {
       width = cwidth;

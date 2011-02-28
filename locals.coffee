@@ -1,5 +1,6 @@
 init2 = ->
   paper = Raphael("canvas", "100%", "100%")
+  window.paper = paper
   width = "100%"
   height = "100%"
   c = paper.rect(0, 0, "100%", "100%", 0).attr
@@ -9,44 +10,44 @@ init2 = ->
   cheight = c.getBBox().height
 
   # math
-  abs = Math.abs
-  acos = Math.acos
-  asin = Math.asin
-  atan = Math.atan
-  ceil = Math.ceil
-  cos = Math.cos
-  exp = Math.exp
-  floor = Math.floor
-  log = Math.log
-  max = Math.max
-  min = Math.min
-  pi = Math.PI
-  pow = Math.pow
-  random = Math.random
-  round = Math.round
-  sin = Math.sin
-  sqrt = Math.sqrt
-  tan = Math.tan
+  window.abs = Math.abs
+  window.acos = Math.acos
+  window.asin = Math.asin
+  window.atan = Math.atan
+  window.ceil = Math.ceil
+  window.cos = Math.cos
+  window.exp = Math.exp
+  window.floor = Math.floor
+  window.log = Math.log
+  window.max = Math.max
+  window.min = Math.min
+  window.pi = Math.PI
+  window.pow = Math.pow
+  window.random = Math.random
+  window.round = Math.round
+  window.sin = Math.sin
+  window.sqrt = Math.sqrt
+  window.tan = Math.tan
 
   # raphael
-  circle = (x,y,r) ->
+  window.circle = (x,y,r) ->
     paper.circle(x,y,r)
-  rect = (x,y,w,h,r) ->
+  window.rect = (x,y,w,h,r) ->
     paper.rect(x,y,w,h,r)
-  ellipse = (x,y,rx,ry) ->
+  window.ellipse = (x,y,rx,ry) ->
     paper.ellipse(x,y,rx,ry)
-  image = (url,x,y,w,h) ->
+  window.image = (url,x,y,w,h) ->
     paper.image(url, x, y, w, h)
-  text = (x,y,str) ->
+  window.text = (x,y,str) ->
     paper.text(x,y,str)
-  path = (str) ->
+  window.path = (str) ->
     paper.path(str)
-  getColor =-> Raphael.getColor()
-  set = paper.set
-  clear = paper.clear
+  window.getColor =-> Raphael.getColor()
+  window.set = paper.set
+  window.clear = paper.clear
 
   # axis, tics, labels
-  createAxis = (width,height,ticwidth) ->
+  window.createAxis = (width,height,ticwidth) ->
     if (width == "100%")
       width = cwidth
     if (height == "100%")
