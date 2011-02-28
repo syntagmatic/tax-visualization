@@ -123,8 +123,64 @@ $ ->
   $('#output').css 'max-height': $(window).height() - 144
 
   # End hacks
+  
+  window.params =
+    year: 2010     # 1984 - 2015
+    type: 0        # 0 - 3
+    sortdir: false
+    income: 5000000
+    filing: 0      # 0 - 4
+    budgetGroup: ["agency", "bureau", "function", "subfunction"]
+    receiptGroup: ["agency", "bureau", "category", "subcategory"]
+    showChange: false,
+    showExtra: false
+    function: 0
+    subfunction: 0
+    category: 0
+    subcategory: 0
 
-  dvc()
+  window.dvc = (type) ->
+    base = "http://www.whatwepayfor.com/api/"
+    call = "?year=" + params.year +
+           "&type=" + params.type +
+           "&sortdir=" + (params.sortdir * 1) +
+           "&filing=" + params.filing +
+           "&showChange=" + (params.showChange * 1) +
+           "&showExtra="  + (params.showExtra * 1)
+
+    typeString = ""
+    switch type
+      when "budgetAccount"
+        typeString = "getBudgetAccount"
+        call += "&function=" + params.function +
+                "&subfunction=" + params.subfunction +
+                "&income=" + params.income
+      when "budgetAggregate"
+        typeString = "getBudgetAggregate"
+        call += "&function=" + params.function +
+                "&subfunction=" + params.subfunction +
+                "&income=" + params.income +
+                "&group=" + params.budgetGroup[2]
+      when "receiptAccount"
+        typeString = "getReceiptAccount"
+        call += "&category=" + params.category +
+                "&subcategory=" + params.subcategory
+      when "receiptAggregate"
+        typeString = "getReceiptAggregate"
+        call += "&category=" + params.category +
+                "&subcategory=" + params.subcategory +
+                "&group=" + params.receiptGroup[2]
+      else typeString = "getBudgetAccount"
+    typeString += "/"
+       
+    api  = base + typeString + call
+    Ajax.get(api, success)
+    
+  success = (data) ->
+    xml = data
+    if typeof data == 'string'
+      xml = stringToXml(data)
+    window.items = xml.getElementsByTagName('item')
 
   window.expose = (x) ->
     str = ""
@@ -163,7 +219,7 @@ $ ->
       myCost: 0
       perCapita: 0
       gdpPercent: 0
-    budgetAggrigate:
+    budgetAggregate:
       group:
         function:
           dimensionName: ""
@@ -255,7 +311,7 @@ $ ->
       myCost: 0
       perCapita: 0
       gdpPercent: 0
-    receiptAggrigate:
+    receiptAggregate:
       group:
         category:
           dimensionName: ""

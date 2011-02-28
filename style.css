@@ -147,4 +147,5 @@ a:hover {
 #buttons button:hover {
   background: #C9A459;
   color: #111;
+  cursor:pointer;
 }

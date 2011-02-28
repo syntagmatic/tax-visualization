@@ -14,49 +14,7 @@
 <script type="text/coffeescript" src="buffers.coffee"></script>
 <script src="dvc.ajax.js"></script>
 <script type="text/javascript">
-
-  var params = {
-    year: 2010,     // 1984 - 2015
-    type: 0,        // 0 - 3
-    sortdir: false,
-    income: 5000000,
-    filing: 0,      // 0 - 4
-    group: ["agency", "bureau", "function", "subfunction"],
-    showChange: false,
-    showExtra: false
-  };
   
-  var dvc = function() { 
-    
-    var base = "http://www.whatwepayfor.com/api/";
-    
-    var type  = "getBudgetAccount/";
-    
-    var call = "?year=" + params.year +
-           "&type=" + params.type +
-           "&sortdir=" + (params.sortdir * 1) +
-           "&income=" + params.income +
-           "&filing=" + params.filing +
-           "&group=" + params.group[2]+
-           "&showChange=" + (params.showChange * 1) +
-           "&showExtra="  + (params.showExtra * 1);
-    
-    var api  = base + type + call;
-    
-    Ajax.get(api, success)
-  };
-  
-  var success = function(data) {
-    
-    var xml = data;
-    if(typeof data == 'string') {
-      xml = stringToXml(data);
-    }
-    window.items = xml.getElementsByTagName('item');
-    
-  };
-
-
   var nab = function (method, account, attribute) {
     return items.item(account).attributes.item(attribute)[method]
   }
@@ -65,7 +23,6 @@
     return items.item(account).attributes.item(attribute)
   }
 
-  
 </script>
  
 </head>
@@ -83,7 +40,7 @@
   <p>Data Visualization Competition<br/>
   <pre class="code">
     <span># load data</span>
-    dvc()
+    dvc(budgetAccount)
 
     <span># get name, value</span>
     items.item(0).attributes.item(4).name
