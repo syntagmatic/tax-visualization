@@ -139,20 +139,11 @@ $ ->
     category: 0
     subcategory: 0
   
-  call =
-    year: "?year=" + paramDefaults.year
-    type: "&type=" + paramDefaults.type
-    sortdir: "&sortdir=" + (paramDefaults.sortdir * 1)
-    filing: "&filing=" + paramDefaults.filing
-    showChange: "&showChange=" + (paramDefaults.showChange * 1)
-    showExtra: "&showExtra="  + (paramDefaults.showExtra * 1)
-    function: "&function=" + paramDefaults.function
-    subfunction: "&subfunction=" + paramDefaults.subfunction
-    category: "&category=" + paramDefaults.category
-    subcategory: "&subcategory=" + paramDefaults.subcategory
-    income: "&income=" + paramDefaults.income
-    budgetGroup: "&group=" + paramDefaults.budgetGroup[2]
-    receiptGroup: "&group=" + paramDefaults.receiptGroup[2]
+  query = (key, val, counter) ->
+    if counter is 0
+      return "?#{key}=#{val}"
+    else
+      return "&#{key}=#{val}"
 
   type =
     budgetAccount: "getBudgetAccount/"
@@ -160,13 +151,14 @@ $ ->
     receiptAccount: "getReceiptAccount/"
     receiptTotal: "getReceiptAggregate/"
 
-  setParams = (paramNames...) ->
+  setParams = (params) ->
     paramString = ""
-    for param in paramNames
-      if call[param]
-        paramString += call[param]
-    if paramNames? #default calls year
-      paramString += call["year"]
+    counter = 0
+    for key, val of params
+      paramString += query(key, val, counter)
+      counter++
+    if !paramDefaults[key] #default calls year
+      paramString += query("year", "2010")
     return paramString
 
   setType = (typeName) ->
@@ -177,9 +169,10 @@ $ ->
       typeString = type["budgetAccount"]
     return typeString
 
-  window.getTaxes = (typeName, paramNames...) ->
+  window.getTaxes = (typeName, params) ->
     base = "http://www.whatwepayfor.com/api/"
-    api  = base + setType(typeName) + setParams(paramNames...)
+    api  = base + setType(typeName) + setParams(params)
+    print(api)
     Ajax.get(api, success)
     
   success = (data) ->
