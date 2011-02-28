@@ -1,12 +1,13 @@
 buffers =
   splatter: '''
-    n = 16
+    n = 28
 
     createAxis("100%","100%",40)
 
+    square = (x) -> pow(x,2)
     cube = (x) -> pow(x,3)
-    pos  =-> 500 + cube (15 * (random()-0.5))
-    size =-> cube 4.5*random()
+    pos  = -> 400 + cube (15*(random()-0.5))
+    size = -> square 4.5*random()
 
     circles = set()
     for i in [1..n]
@@ -23,19 +24,21 @@ buffers =
         "stroke-opacity": 1
         opacity:0.85
         cursor: "pointer"
+        scale: 1.5
     circles.mouseout ->
       this.anim
         "stroke-opacity": 0
         opacity:0.6
         cursor: "pointer"
-        duration: 140
+        duration: 180
+        scale: 1
             '''
   spiral:   '''
     n = 100
 
     createAxis("100%","100%",40)
 
-    posx = (x) -> 800 + 9*i*sin(pi/12*i)
+    posx = (x) -> 600 + 9*i*sin(pi/12*i)
     posy = (x) -> 500 + 9*i*cos(pi/12*i)
     size = (x) -> x/2 + 1
 
@@ -79,6 +82,10 @@ buffers =
       x = (inc*i + min)
       y = eq x
       points.push point(x*(width/num/inc) + ox, y*zoom + oy)
+    
+    points.attr
+      fill: "#999"
+      stroke: "#999"
             '''
 
 $ ->
@@ -117,12 +124,13 @@ $ ->
   buffer = $("#buffers").val()
   $("#code").html buffers[buffer]
 
-  # Hacks
-
-  $('#console').height($(window).height()).fadeIn(200)
-  $('#output').css 'max-height': $(window).height() - 144
-
+  # Resize Hacks
+  $(window).bind "resize", ->
+    $('#output').css 'max-height': $(window).height() - 130
+    paper.setSize $('#canvas').width(), $('#canvas').height()
   # End hacks
+
+  window.help = "This is Raffi, a data visualization prototyping suite built in CoffeeScript and Raphael. Click the tutorial to learn more."
 
   window.paramDefaults =
     year: 2010     # 1984 - 2015

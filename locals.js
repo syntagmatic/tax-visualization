@@ -1,7 +1,7 @@
 var init2, randomPath;
 init2 = function() {
   var c, cheight, cwidth, height, paper, width;
-  paper = Raphael("canvas", "100%", "100%");
+  paper = Raphael("canvas", $('#canvas').width(), $('#canvas').height());
   window.paper = paper;
   width = "100%";
   height = "100%";
@@ -63,8 +63,8 @@ init2 = function() {
     axis = set();
     grid = set();
     labels = set();
-    o = [40, height - 40];
-    ox = [width - 40, 40];
+    o = [ticwidth, height - ticwidth];
+    ox = [width - ticwidth, ticwidth];
     axis.push(path("M" + o[0] + " " + o[1] + "L" + ox[0] + " " + o[1]));
     axis.push(path("M" + o[0] + " " + o[1] + "L" + o[0] + " " + o[0]));
     tic = function(x, y, w, h) {
@@ -86,33 +86,34 @@ init2 = function() {
       grid.push(path("M0 " + inc + "L" + width + " " + inc));
     }
     for (i = 0, _ref = xmarks - 3; (0 <= _ref ? i <= _ref : i >= _ref); (0 <= _ref ? i += 1 : i -= 1)) {
-      inc = 40 + i * ticwidth;
+      inc = ticwidth + i * ticwidth;
       if (i % 2 === 1) {
-        xtics.push(tic(inc, height - 40, 0, 8));
+        xtics.push(tic(inc, height - ticwidth, 0, 8));
       } else {
-        xtics.push(tic(inc, height - 40, 0, 12));
+        xtics.push(tic(inc, height - ticwidth, 0, 12));
         labels.push(text(inc, height - 16, inc + ""));
       }
     }
     for (i = 0, _ref2 = ymarks - 4; (0 <= _ref2 ? i <= _ref2 : i >= _ref2); (0 <= _ref2 ? i += 1 : i -= 1)) {
-      inc = 40 + i * ticwidth;
+      inc = ticwidth + i * ticwidth;
       if (i % 2 === 1) {
-        ytics.push(tic(40, height - inc, 8, 0));
+        ytics.push(tic(ticwidth, height - inc, 8, 0));
       } else {
-        ytics.push(tic(40, height - inc, 12, 0));
+        ytics.push(tic(ticwidth, height - inc, 12, 0));
         labels.push(text(14, height - inc, inc + ""));
       }
     }
     axis.push(xtics);
     axis.push(ytics);
     axis.attr({
-      stroke: "#aaa"
+      stroke: "#444",
+      opacity: 0
     });
     grid.attr({
-      stroke: "#e0e0e0"
+      stroke: "#272727"
     });
     labels.attr({
-      stroke: "#666"
+      stroke: "#888"
     });
     return {
       axis: axis,

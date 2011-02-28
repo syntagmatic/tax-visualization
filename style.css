@@ -1,7 +1,6 @@
 body {
   background: #191919;
   color: #aaa;
-  font: 300 100.1% "Helvetica Neue", Helvetica, "Arial Unicode MS", Arial, sans-serif;
   font-size:16px;
   margin: 0;
   padding: 0;
@@ -26,7 +25,8 @@ h1 {
 #canvas {
   height: 100%;
   text-align: left;
-  margin-left: 320px;
+  margin-left: 322px;
+  overflow: hidden;
 }
 #canvas b {
   color: #ddd;
@@ -52,16 +52,17 @@ h1 {
   float:right;
 }
 #console {
-  background: #222;
+  background: #333;
   color: #ffcf6f;
-  font-size:11px;
+  font-size:13px;
   float: left;
   position: relative;
   text-align:left;
   margin: 0;
   padding: 0;
   width: 320px;
-  display:none;
+  height: 100%;
+  border-right: 1px solid #555;
 }
 #tutorial {
   max-height: 600px;
@@ -82,31 +83,44 @@ h1 {
   position:absolute;
   bottom:0;
   overflow:hidden;
-  font-size:11px;
+  font-size:13px;
   background: #234;
   color: #fdb;
   border: none;
   overflow: auto;
+  border-top: 1px solid #368;
+  border-right: 1px solid #368;
 }
 #output {
-  padding: 4px;
-  width: 312px;
+  padding: 4px 0 4px 4px;
+  width: 316px;
   max-height: 515px;
   position:absolute;
-  bottom:120px;
+  bottom:122px;
+  border-bottom: 1px solid #222;
   overflow: auto;
 }
 .error {
   color: #f32;
-  font-weight:bold;
+  font-weight: bold;
 }
 .print {
   color: #0d4;
-  font-weight:bold;
+  font-weight: bold;
 }
 .normalOutput {
   color: #efefef;
-  font-weight:bold;
+  font-weight: bold;
+}
+.tabcomplete {
+  background: #444;
+  position: relative;
+  top: 4px;
+  left: -2px;
+  padding: 2px;
+}
+.tabcomplete strong {
+  color: #efefef;
 }
 p {
   color: #999;
@@ -136,7 +150,7 @@ a:hover {
 #buttons button {
   font-size:13px;
   font-weight:bold;
-  border: 1px solid #888;
+  border: 1px solid #444;
   padding: 3px 8px;
   background: #111;
   color: #ffcf6f;

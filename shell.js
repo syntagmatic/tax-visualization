@@ -83,6 +83,8 @@ function inputKeydown(e) {
   } else if (e.keyCode == 13) { // enter
     // execute the input on enter
     try { go(); } catch(er) { alert(er); };
+    // remove tab complete results
+    $('.tabcomplete').remove()
     setTimeout(function() { _in.value = ""; }, 0); // can't preventDefault on input, so clear it later
   } else if (e.keyCode == 38) { // up
     // go up in history if at top or ctrl-up
@@ -93,6 +95,8 @@ function inputKeydown(e) {
     if (e.ctrlKey || caretInLastLine(_in))
       hist(false);
   } else if (e.keyCode == 9) { // tab
+    // remove tab complete results
+    $('.tabcomplete').remove()
     tabcomplete();
     setTimeout(function() { refocus(); }, 0); // refocus because tab was hit
   } else { }
@@ -600,7 +604,7 @@ function tabcomplete()
       //dump("matches.length: " + matches.length + ", tooManyMatches: " + tooManyMatches + ", objAndComplete: " + objAndComplete + "\n");
       if(matches.length > 1 && (tooManyMatches == objAndComplete || matches.length <= 10)) {
 
-        printWithRunin("Matches: ", matches.join(', '), "tabcomplete");
+        printWithRunin("Matches", matches.join(', '), "tabcomplete");
         tooManyMatches = null;
       }
       else if(matches.length > 10)
