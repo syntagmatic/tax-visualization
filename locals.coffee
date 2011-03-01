@@ -123,7 +123,6 @@ init2 = ->
       Raphael.el[attr] = (value) ->
         obj = {}
         obj[attr] = value
-        console.log obj
         this.attr obj
 
 randomPath = (length, j, dotsy) ->

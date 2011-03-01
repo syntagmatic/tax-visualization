@@ -141,7 +141,6 @@ init2 = function() {
         var obj;
         obj = {};
         obj[attr] = value;
-        console.log(obj);
         return this.attr(obj);
       };
     })(attr));
