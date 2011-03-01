@@ -1,6 +1,6 @@
 var init2, randomPath;
 init2 = function() {
-  var c, cheight, cwidth, height, paper, width;
+  var attr, attrs, attrs2, c, cheight, cwidth, height, paper, width, _i, _len, _results;
   paper = Raphael("canvas", $('#canvas').width(), $('#canvas').height());
   window.paper = paper;
   width = "100%";
@@ -121,7 +121,7 @@ init2 = function() {
       labels: labels
     };
   };
-  return Raphael.el.anim = function(obj) {
+  Raphael.el.anim = function(obj) {
     var duration;
     if (obj.duration !== void 0) {
       duration = obj.duration;
@@ -131,6 +131,22 @@ init2 = function() {
       return this.animate(obj);
     }
   };
+  attrs = ['cursor', 'cx', 'cy', 'fill', 'font', 'height', 'href', 'opacity', 'path', 'r', 'rotation', 'rx', 'ry', 'scale', 'src', 'stroke', 'target', 'title', 'translation', 'width', 'x', 'y'];
+  attrs2 = ['clip-rect', 'fill-opacity', 'font-family', 'font-size', 'font-weight', 'stroke-dasharray', 'stroke-linecap', 'stroke-linejoin', 'stroke-miterlimit', 'stroke-opacity', 'text-anchor'];
+  _results = [];
+  for (_i = 0, _len = attrs.length; _i < _len; _i++) {
+    attr = attrs[_i];
+    _results.push((function(attr) {
+      return Raphael.el[attr] = function(value) {
+        var obj;
+        obj = {};
+        obj[attr] = value;
+        console.log(obj);
+        return this.attr(obj);
+      };
+    })(attr));
+  }
+  return _results;
 };
 randomPath = function(length, j, dotsy) {
   var i, random_path, x, y;

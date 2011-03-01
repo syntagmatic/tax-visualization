@@ -108,6 +108,24 @@ init2 = ->
     else
       this.animate(obj)
 
+  attrs = ['cursor', 'cx', 'cy', 'fill', 'font', 'height',
+           'href', 'opacity', 'path', 'r', 'rotation', 'rx', 'ry', 'scale',
+           'src', 'stroke', 'target', 'title', 'translation', 'width',
+           'x', 'y']
+
+  attrs2 = ['clip-rect', 'fill-opacity', 'font-family', 'font-size',
+            'font-weight', 'stroke-dasharray', 'stroke-linecap',
+            'stroke-linejoin', 'stroke-miterlimit', 'stroke-opacity',
+            'text-anchor']
+
+  for attr in attrs
+    do (attr) ->
+      Raphael.el[attr] = (value) ->
+        obj = {}
+        obj[attr] = value
+        console.log obj
+        this.attr obj
+
 randomPath = (length, j, dotsy) ->
   random_path = ""
   x = 10
