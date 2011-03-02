@@ -31,6 +31,14 @@ h1 {
 #canvas b {
   color: #ddd;
 }
+#canvas .tableWrap {
+  overflow:scroll;
+  height:100%;
+}
+#canvas table {
+  font-size:12px;
+  width:100%;
+}
 #text {
   position:absolute;
   top:20px;

@@ -31,12 +31,35 @@
   <div id="tutorial">
   <p>Data Visualization Competition<br/>
   <pre class="code">
-<span># load data</span>
-dvc(budgetAccount)
+<span># type attributes</span>
+budgetAccount
+budgetTotal
+receiptAccount
+receiptTotal
 
-<span># get name, value</span>
-items.item(0).attributes.item(4).name
-items.item(0).attributes.item(4).value
+<span># parameter defaults</span>
+year:num, 
+type: 0 - 3, 
+sortdir: 0 - 1, 
+income:num, 
+filing: 0 - 4, 
+budgetGroup/receiptGroup: agency, bureau, function/category, subfunction/subcategory, 
+showChange: 0 - 1, 
+showExtra: 0 -1, 
+function/category:string, 
+subfunction/subcategory:string
+  
+<span># load data</span>
+getTaxes type, params
+
+If the type is a total, it is recommended to specify a group.
+
+If the type is a budget, use function or subfuction.
+If the type is a receipt, use category or subcategory.
+
+<span># show data</span>
+showTaxes()
+
   </pre>
   <p>Raphael Cheat Sheet<br/>
   <small><a href="http://raphaeljs.com/reference.html">Full Reference</a></small></p>

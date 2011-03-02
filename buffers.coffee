@@ -140,8 +140,8 @@ $ ->
     filing: 0      # 0 - 4
     budgetGroup: ["agency", "bureau", "function", "subfunction"]
     receiptGroup: ["agency", "bureau", "category", "subcategory"]
-    showChange: false,
-    showExtra: false
+    showChange: 0
+    showExtra: 0
     function: 0
     subfunction: 0
     category: 0
@@ -165,7 +165,7 @@ $ ->
     for key, val of params
       paramString += query(key, val, i)
       i++
-    if !paramDefaults[key] #default calls year
+    if !params? #default calls year
       paramString += query("year", "2010", 0)
     return paramString
 
@@ -180,10 +180,10 @@ $ ->
   window.getTaxes = (typeName, params) ->
     base = "http://www.whatwepayfor.com/api/"
     api  = base + setType(typeName) + setParams(params)
-    print(api)
     Ajax.get(api, success)
     
   success = (data) ->
+    print 'got items!'
     xml = data
     if typeof data == 'string'
       xml = stringToXml(data)
@@ -195,10 +195,37 @@ $ ->
   methods = (account, attribute) ->
     return items.item(account).attributes.item(attribute)
 
+  window.numAttributes = (account) ->
+    return items.item(account).attributes.length
+
+  window.showTaxes = ->
+    if (items?)
+      str = "<div class='tableWrap'><table>" + getItemHeader 0
+      for item, i in items
+        str += getItemRow i
+      str += "</div></table>"
+      $('#canvas').html str
+    else
+      print "items is not defined.  Please run getTaxes()"
+
+  getItemRow = (x) ->
+    str = "<tr>"
+    for i in [0...numAttributes x]
+      str += "<td>" + nab('value', x, i) + "</td>"
+    str += "</tr>"
+    return str
+
+  getItemHeader = (x) ->
+    str = "<tr>"
+    for i in [0...numAttributes x]
+      str += "<th>" + nab('name', x, i) + "</th>"
+    str += "</tr>"
+    return str
+
   window.expose = (x) ->
     str = ""
     for i in [0..12]
-      str += "<b>" + (nab('name', x, i)) + "</b>: " + (nab('value', x, i)) + "<br/>"
+      str += "<b>" + nab('name', x, i) + "</b>: " + nab('value', x, i) + "<br/>"
     $('#canvas').html str
 
   window.taxes =
