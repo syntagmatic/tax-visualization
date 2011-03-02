@@ -1,6 +1,6 @@
 var init2, randomPath;
 init2 = function() {
-  var attr, attrs, attrs2, c, cheight, cwidth, height, paper, width, _i, _len, _results;
+  var attr, attrs, attrs2, c, cheight, cwidth, height, move, paper, start, up, width, _fn, _i, _len;
   paper = Raphael("canvas", $('#canvas').width(), $('#canvas').height());
   window.paper = paper;
   width = "100%";
@@ -50,9 +50,13 @@ init2 = function() {
   window.getColor = function() {
     return Raphael.getColor();
   };
-  window.set = paper.set;
-  window.clear = paper.clear;
-  window.createAxis = function(width, height, ticwidth) {
+  window.set = function() {
+    return paper.set();
+  };
+  window.clear = function() {
+    return paper.clear();
+  };
+  window.axis = function(width, height, ticwidth) {
     var axis, grid, i, inc, labels, o, ox, tic, xmarks, xtics, ymarks, ytics, _ref, _ref2;
     if (width === "100%") {
       width = cwidth;
@@ -121,6 +125,9 @@ init2 = function() {
       labels: labels
     };
   };
+  window.grid = function(ticwidth) {
+    return axis("100%", "100%", ticwidth);
+  };
   Raphael.el.anim = function(obj) {
     var duration;
     if (obj.duration !== void 0) {
@@ -133,19 +140,32 @@ init2 = function() {
   };
   attrs = ['cursor', 'cx', 'cy', 'fill', 'font', 'height', 'href', 'opacity', 'path', 'r', 'rotation', 'rx', 'ry', 'scale', 'src', 'stroke', 'target', 'title', 'translation', 'width', 'x', 'y'];
   attrs2 = ['clip-rect', 'fill-opacity', 'font-family', 'font-size', 'font-weight', 'stroke-dasharray', 'stroke-linecap', 'stroke-linejoin', 'stroke-miterlimit', 'stroke-opacity', 'text-anchor'];
-  _results = [];
+  _fn = function(attr) {
+    return Raphael.el[attr] = function(value) {
+      var obj;
+      obj = {};
+      obj[attr] = value;
+      return this.attr(obj);
+    };
+  };
   for (_i = 0, _len = attrs.length; _i < _len; _i++) {
     attr = attrs[_i];
-    _results.push((function(attr) {
-      return Raphael.el[attr] = function(value) {
-        var obj;
-        obj = {};
-        obj[attr] = value;
-        return this.attr(obj);
-      };
-    })(attr));
+    _fn(attr);
   }
-  return _results;
+  start = function() {
+    this.ox = this.attr("cx");
+    return this.oy = this.attr("cy");
+  };
+  move = function(dx, dy) {
+    return this.attr({
+      cx: this.ox + dx,
+      cy: this.oy + dy
+    });
+  };
+  up = function() {};
+  return Raphael.el.drag = function() {
+    return this.drag(move, start, up);
+  };
 };
 randomPath = function(length, j, dotsy) {
   var i, random_path, x, y;

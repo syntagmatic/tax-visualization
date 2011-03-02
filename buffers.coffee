@@ -2,7 +2,7 @@ buffers =
   splatter: '''
     n = 28
 
-    createAxis("100%","100%",40)
+    axis("100%","100%",40)
 
     square = (x) -> pow(x,2)
     cube = (x) -> pow(x,3)
@@ -36,7 +36,7 @@ buffers =
   spiral:   '''
     n = 100
 
-    createAxis("100%","100%",40)
+    axis("100%","100%",40)
 
     posx = (x) -> 600 + 9*i*sin(pi/12*i)
     posy = (x) -> 500 + 9*i*cos(pi/12*i)

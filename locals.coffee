@@ -42,12 +42,12 @@ init2 = ->
     paper.text(x,y,str)
   window.path = (str) ->
     paper.path(str)
-  window.getColor =-> Raphael.getColor()
-  window.set = paper.set
-  window.clear = paper.clear
+  window.getColor = -> Raphael.getColor()
+  window.set = -> paper.set()
+  window.clear = -> paper.clear()
 
   # axis, tics, labels
-  window.createAxis = (width,height,ticwidth) ->
+  window.axis = (width,height,ticwidth) ->
     if (width == "100%")
       width = cwidth
     if (height == "100%")
@@ -98,6 +98,10 @@ init2 = ->
     labels.attr stroke: "#888"
     
     return { axis, grid, labels }
+  
+  # full width grid
+  window.grid = (ticwidth) ->
+    return axis "100%", "100%", ticwidth
 
   # duration syntactic sugar
   Raphael.el.anim = (obj) ->
@@ -118,12 +122,27 @@ init2 = ->
             'stroke-linejoin', 'stroke-miterlimit', 'stroke-opacity',
             'text-anchor']
 
+  # shorthand for changing attributes
+  #    circle(25,25,5).fill("red")
   for attr in attrs
     do (attr) ->
       Raphael.el[attr] = (value) ->
         obj = {}
         obj[attr] = value
         this.attr obj
+  
+  # basic drag and drop
+  start = ->
+    # storing original coordinates
+    this.ox = this.attr("cx")
+    this.oy = this.attr("cy")
+  move = (dx, dy) ->
+    # move will be called with dx and dy
+    this.attr({cx: this.ox + dx, cy: this.oy + dy})
+  up = ->
+    # restoring state
+  Raphael.el.drag = ->
+    this.drag(move,start,up)
 
 randomPath = (length, j, dotsy) ->
   random_path = ""
