@@ -141,7 +141,7 @@ init2 = ->
     this.attr({cx: this.ox + dx, cy: this.oy + dy})
   up = ->
     # restoring state
-  Raphael.el.drag = ->
+  Raphael.el.draggable = ->
     this.drag(move,start,up)
 
 randomPath = (length, j, dotsy) ->

@@ -163,7 +163,7 @@ init2 = function() {
     });
   };
   up = function() {};
-  return Raphael.el.drag = function() {
+  return Raphael.el.draggable = function() {
     return this.drag(move, start, up);
   };
 };
