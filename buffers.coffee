@@ -1,8 +1,5 @@
-buffers =
-  splatter: '''
-    n = 28
-
-    axis("100%","100%",40)
+$ ->
+  window.splat = (n) ->
 
     square = (x) -> pow(x,2)
     cube = (x) -> pow(x,3)
@@ -32,11 +29,9 @@ buffers =
         cursor: "pointer"
         duration: 180
         scale: 1
-            '''
-  spiral:   '''
-    n = 100
+    "Splat!"
 
-    axis("100%","100%",40)
+  window.spiral = (n) ->
 
     posx = (x) -> 600 + 9*i*sin(pi/12*i)
     posy = (x) -> 500 + 9*i*cos(pi/12*i)
@@ -51,8 +46,10 @@ buffers =
         "stroke": "#333"
         "stroke-width": 1
         "stroke-opacity": 0
-            '''
-  chart:    '''
+    "Far out!"
+
+  window.chart = ->
+
     values = []
     dotsy = []
     clr = []
@@ -64,8 +61,11 @@ buffers =
       values[i] = randomPath(30, i, dotsy)
       clr[i] = Raphael.getColor()
       c.attr({path: values[i], stroke: clr[i]})
-            '''
-  equation: '''
+    print "A random path"
+    c
+
+  window.equation = ->
+
     eq = (x) -> sin(x)  # equation
     min = 0             # minimum
     max = 4*pi          # maximum
@@ -77,7 +77,7 @@ buffers =
 
     num = (max-min) / inc
     points = []
-    point = (x,y) -> circle(x,y,1)
+    point = (x,y) -> circle(x,y,3)
     for i in [0..num]
       x = (inc*i + min)
       y = eq x
@@ -86,9 +86,10 @@ buffers =
     points.attr
       fill: "#999"
       stroke: "#999"
-            '''
-
-$ ->
+    "A sinusoid"
+  
+  
+  # Buttons
   flipper = (button, panel, showmsg, hidemsg) ->
     $(button).toggle( ->
       $(this).html hidemsg
@@ -115,22 +116,29 @@ $ ->
           "Output",
           "Hide Output")
 
-  $("#buffers").change( ->
-    buffer = $(this).val()
-    $("#code").html buffers[buffer]
-  )
-
-  # When buffer selected on reload
-  buffer = $("#buffers").val()
-  $("#code").html buffers[buffer]
-
   # Resize Hacks
   $(window).bind "resize", ->
     $('#output').css 'max-height': $(window).height() - 130
     paper.setSize $('#canvas').width(), $('#canvas').height()
   # End hacks
 
-  window.help = "This is Raffi, a data visualization prototyping suite built in CoffeeScript and Raphael. Click the tutorial to learn more."
+  window.help = ->
+    print "This is Raffi, a data visualization prototyping suite built in CoffeeScript and Raphael. Click the tutorial to learn more.  Try entering these lines into the console:"
+    print "- - - - - - - -"
+    print "- - Drawing - -"
+    print "- - - - - - - -"
+    print "c = circle(200,200,50).fill('lavender')"
+    print "c.draggable()"
+    print "grid(40)"
+    print "splat(50)"
+    print "clear()"
+    print "spiral(75)"
+    print "- - - - - - - - -"
+    print "- - Functions - -"
+    print "- - - - - - - - -"
+    print "f = (x,y) -> x*y"
+    print "f(2,3)"
+    print "f 2,3"
 
   window.paramDefaults =
     year: 2010     # 1984 - 2015

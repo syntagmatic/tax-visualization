@@ -25,7 +25,6 @@ h1 {
 #canvas {
   height: 100%;
   text-align: left;
-  margin-left: 322px;
   overflow: hidden;
 }
 #canvas b {
@@ -68,7 +67,7 @@ h1 {
   text-align:left;
   margin: 0;
   padding: 0;
-  width: 320px;
+  width: 360px;
   height: 100%;
   border-right: 1px solid #555;
 }
@@ -98,15 +97,19 @@ h1 {
   overflow: auto;
   border-top: 1px solid #368;
   border-right: 1px solid #368;
+  padding: 0;
 }
 #output {
   padding: 4px 0 4px 4px;
-  width: 316px;
+  width: 356px;
   max-height: 515px;
   position:absolute;
   bottom:122px;
   border-bottom: 1px solid #222;
   overflow: auto;
+}
+.input {
+  padding-top: 12px;
 }
 .error {
   color: #f32;
@@ -114,7 +117,6 @@ h1 {
 }
 .print {
   color: #0d4;
-  font-weight: bold;
 }
 .normalOutput {
   color: #efefef;

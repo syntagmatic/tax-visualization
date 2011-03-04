@@ -19,63 +19,54 @@
   <div id="output">
     <div class="print">
       Welcome to Raffi.
+      <br/>&nbsp;<br/>
+      Type <span style="color:#3ce;">help()</span> to get it.
     </div>
   </div>
   <div id="input_wrap">
-    <textarea id="input" class="input" wrap="off" onkeydown="inputKeydown(event)" rows="1"></textarea>
+    <textarea id="input" wrap="off" onkeydown="inputKeydown(event)" rows="1"></textarea>
   </div>
 </div>
 <div id="canvas"></div>
 <div id="text">
   <textarea id="code"></textarea>
   <div id="tutorial">
-  <p>Data Visualization Competition<br/>
-  <pre class="code">
-<span># type attributes</span>
-budgetAccount
-budgetTotal
-receiptAccount
-receiptTotal
-
-<span># parameter defaults</span>
-year:num, 
-type: 0 - 3, 
-sortdir: 0 - 1, 
-income:num, 
-filing: 0 - 4, 
-budgetGroup/receiptGroup: agency, bureau, function/category, subfunction/subcategory, 
-showChange: 0 - 1, 
-showExtra: 0 -1, 
-function/category:string, 
-subfunction/subcategory:string
-  
-<span># load data</span>
-getTaxes type, params
-
-If the type is a total, it is recommended to specify a group.
-
-If the type is a budget, use function or subfuction.
-If the type is a receipt, use category or subcategory.
-
-<span># show data</span>
-showTaxes()
-
-  </pre>
-  <p>Raphael Cheat Sheet<br/>
+ <p>Raphael Cheat Sheet<br/>
   <small><a href="http://raphaeljs.com/reference.html">Full Reference</a></small></p>
   <pre class="code">
-<span># floats</span>
-x, y, r, rx, ry, w, h
+x    <span># x position</span>
+y    <span># x position</span>
+r    <span># radius</span>
+w    <span># width</span>
+h    <span># height</span>
+rx   <span># ellipse x-axis</span>
+ry   <span># ellipse y-axis</span>
 
-<span># strings</span>
-url, str
 
 <span># objects</span>
+
 circle(x,y,r)
+
 rect(x, y, w, h, r)
+
 ellipse(x, y, rx, ry)
+
 image(url, x, y, w, h)
+
 text(x, y, str)
+
+
+<span># examples (run these in the blue console)</span>
+
+circle(200,200,30).fill('darkorange')
+
+rect(300,200,30,120,5).fill('azure')
+
+ellipse(400, 120, 30, 90).fill('olivedrab')
+
+text(100,100,'hi earth').attr
+  'font-size': 14
+  'fill': 'tomato'
 
 <span># paths - use <a href="http://www.w3schools.com/svg/svg_path.asp">svg path</a> string format</span>
 path("M10 10L90 90")
@@ -119,21 +110,52 @@ pow(x,3) <span># x^3</span>
 floor 4.5 <span># 4</span>
 ceil 5.2 <span># 6</span>
   </pre>
+  <p>Data Visualization Competition</p>
+  <pre class="code">
+<span># get data</span>
+getTaxes()
+
+<span># show data</span>
+showTaxes()
+
+<span># The following are notes for kai and mary </span>
+
+<span># type attributes</span>
+budgetAccount
+budgetTotal
+receiptAccount
+receiptTotal
+
+<span># parameter defaults</span>
+year:num, 
+type: 0 - 3, 
+sortdir: 0 - 1, 
+income:num, 
+filing: 0 - 4, 
+budgetGroup/receiptGroup: agency, bureau, function/category, subfunction/subcategory, 
+showChange: 0 - 1, 
+showExtra: 0 -1, 
+function/category:string, 
+subfunction/subcategory:string
+  
+<span># load data</span>
+getTaxes type, params
+  <span># If the type is a total, it is recommended to specify a group.
+  # If the type is a budget, use function or subfuction.
+  # If the type is a receipt, use category or subcategory.</span>
+
+
+  </pre>
+ 
 </div><!--tutorial-->
 <div id="buttons">
-  <select id="buffers">
-    <option value="splatter">Splatter</option>
-    <option value="spiral">Spiral</option>
-    <option value="chart">Chart</option>
-    <option value="equation">Equation</option>
-  </select>
-  <button id="run" type="button">Graph it!</button>
   <button id="clear" type="button">Clear</button>
   <button id="tut" type="button">Tutorial</button>
  <!-- <button id="cons" type="button">Console</button>
   <button id="out" type="button">Output</button> -->
-  <button id="show" type="button">Code</button>
-  <button id="js" type="button">Compile</button>
+ <!--  <button id="show" type="button">Code</button>
+  <button id="run" type="button">Graph it!</button>
+  <button id="js" type="button">Compile</button> -->
 </div>
 </div>
 </body></html>
