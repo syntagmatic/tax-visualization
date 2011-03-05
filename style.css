@@ -32,7 +32,11 @@ h1 {
   width:100%;
 }
 #canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
   height: 100%;
+  width: 100%;
   text-align: left;
   overflow: hidden;
 }
@@ -60,7 +64,7 @@ h1 {
   float:right;
 }
 #console {
-  background: #333;
+  background: #222;
   color: #ffcf6f;
   font-size:13px;
   float: left;
@@ -99,6 +103,7 @@ h1 {
   border-top: 1px solid #368;
   border-right: 1px solid #368;
   padding: 0;
+  z-index: 10;
 }
 #output {
   padding: 4px 0 4px 4px;
@@ -156,7 +161,11 @@ a:hover {
   text-decoration: underline;
 }
 #buttons {
-  clear:both;
+  margin: 12px;
+  top: 0;
+  right: 0;
+  position: absolute;
+  z-index: 10;
 }
 #buttons button {
   font-size:13px;
