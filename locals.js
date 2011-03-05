@@ -2,6 +2,11 @@ var init2, randomPath;
 init2 = function() {
   var attr, attrs, attrs2, c, cheight, cwidth, height, move, paper, start, up, width, _fn, _i, _len;
   paper = Raphael("canvas", $('#canvas').width(), $('#canvas').height());
+  window.zpd = new RaphaelZPD(paper, {
+    zoom: true,
+    pan: true,
+    drag: true
+  });
   window.paper = paper;
   width = "100%";
   height = "100%";
