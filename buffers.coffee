@@ -174,6 +174,7 @@ $ ->
     budgetTotal: "getBudgetAggregate/"
     receiptAccount: "getReceiptAccount/"
     receiptTotal: "getReceiptAggregate/"
+    population: "getPopulation/"
 
   setParams = (params) ->
     paramString = ""
@@ -204,6 +205,7 @@ $ ->
     if typeof data == 'string'
       xml = stringToXml(data)
     window.items = xml.getElementsByTagName('item')
+    $(window).trigger 'got_items'
 
   window.nab = (method, account, attribute) ->
     return items.item(account).attributes.item(attribute)[method]
@@ -220,7 +222,7 @@ $ ->
       for item, i in items
         str += getItemRow i
       str += "</table>"
-      $('#tables').html str
+      printTaxes str
     else
       print "items is not defined.  Please run getTaxes()"
 
@@ -238,6 +240,15 @@ $ ->
     str += "</tr>"
     return str
 
+  printTaxes = (str) ->
+    $('#tables').html str
+    if !($('#tables').is(':visible'))
+      $('#tables').fadeToggle()
+      $('#canvas').fadeToggle()
+
+  $(window).bind 'got_items', ->
+    showTaxes()
+  
   window.expose = (x) ->
     str = ""
     for i in [0..12]
