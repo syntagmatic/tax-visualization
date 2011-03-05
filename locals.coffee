@@ -1,5 +1,6 @@
 init2 = ->
   paper = Raphael("canvas", $('#canvas').width(), $('#canvas').height())
+  window.zpd = new RaphaelZPD(paper, { zoom: true, pan: true, drag: true })
   window.paper = paper
   width = "100%"
   height = "100%"
