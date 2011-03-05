@@ -1,4 +1,4 @@
-$ -> 
+$ ->
   # Data Vis Competition
   window.paramDefaults =
     year: 2010     # 1984 - 2015
@@ -27,6 +27,10 @@ $ ->
     receiptAccount: "getReceiptAccount/"
     receiptTotal: "getReceiptAggregate/"
     population: "getPopulation/"
+    inflation: "getInflation/"
+    gdp: "getGDP/"
+    debt: "getDebt/"
+    taxRates: "getTaxRates/"
 
   setParams = (params) ->
     paramString = ""
@@ -50,7 +54,7 @@ $ ->
     base = "http://www.whatwepayfor.com/api/"
     api  = base + setType(typeName) + setParams(params)
     Ajax.get(api, success)
-    
+   
   success = (data) ->
     print 'got items!'
     xml = data
@@ -58,6 +62,22 @@ $ ->
       xml = stringToXml(data)
     window.items = xml.getElementsByTagName('item')
     $(window).trigger 'got_items'
+
+  # Shortcut functions
+  window.getPopulation = (params) ->
+    getTaxes("population", params)
+
+  window.getInflation = (params) ->
+    getTaxes("inflation", params)
+
+  window.getGdp = (params) ->
+    getTaxes("gdp", params)
+
+  window.getDebt = (params) ->
+    getTaxes("debt", params)
+
+  window.getTaxRates = (params) ->
+    getTaxes("taxRates", params)
 
   window.nab = (method, account, attribute) ->
     return items.item(account).attributes.item(attribute)[method]
