@@ -1,4 +1,5 @@
 $ ->
+  # Example graphics
   window.splat = (n) ->
 
     square = (x) -> pow(x,2)
@@ -90,31 +91,37 @@ $ ->
   
   
   # Buttons
-  flipper = (button, panel, showmsg, hidemsg) ->
+  flipper = (button, showmsg, hidemsg, panels...) ->
     $(button).toggle( ->
       $(this).html hidemsg
-      $(panel).fadeIn()
+      for panel in panels
+        $(panel).fadeToggle()
     , ->
       $(this).html showmsg
-      $(panel).fadeOut()
+      for panel in panels
+        $(panel).fadeToggle()
     )
 
   flipper("#show",
-          "#code",
           "Code",
-          "Hide Code")
+          "Hide Code",
+          "#code")
   flipper("#cons",
-          "#console",
           "Console",
-          "Hide Console")
+          "Hide Console",
+          "#console")
   flipper("#tut",
-          "#tutorial",
           "Tutorial",
-          "Hide Tutorial")
+          "Hide Tutorial",
+          "#tutorial")
   flipper("#out",
-          "#canvas",
           "Output",
-          "Hide Output")
+          "Hide Output",
+          "#canvas")
+  flipper("#worlds",
+          "Toggle World",
+          "Toggle World",
+          "#tables", "#canvas")
 
   # Resize Hacks
   $(window).bind "resize", ->
@@ -140,6 +147,7 @@ $ ->
     print "f(2,3)"
     print "f 2,3"
 
+  # Data Vis Competition
   window.paramDefaults =
     year: 2010     # 1984 - 2015
     type: 0        # 0 - 3
@@ -208,10 +216,10 @@ $ ->
 
   window.showTaxes = ->
     if (items?)
-      str = "<div class='tableWrap'><table>" + getItemHeader 0
+      str = "<table>" + getItemHeader 0
       for item, i in items
         str += getItemRow i
-      str += "</div></table>"
+      str += "</table>"
       $('#tables').html str
     else
       print "items is not defined.  Please run getTaxes()"
@@ -236,6 +244,7 @@ $ ->
       str += "<b>" + nab('name', x, i) + "</b>: " + nab('value', x, i) + "<br/>"
     $('#tables').html str
 
+  #data object
   window.taxes =
     budgetAccount:
       year: 2010

@@ -29,7 +29,9 @@
   </div>
 </div>
 <div id="canvas"></div>
-<div id="tables"></div>
+<div id="tables">
+  <div>Nothing here!  Try getTaxes() showTaxes()</div>
+</div>
 <div id="text">
   <textarea id="code"></textarea>
   <div id="tutorial">
@@ -141,10 +143,16 @@ function/category:string,
 subfunction/subcategory:string
   
 <span># load data</span>
-getTaxes type, params
+getTaxes "budgetTotal", 
+  budgetGroup: "agency"
+  showChange:1
+getTaxes "receiptAccount",
+  year: 2009
+  income: 50000
   <span># If the type is a total, it is recommended to specify a group.
   # If the type is a budget, use function or subfuction.
   # If the type is a receipt, use category or subcategory.</span>
+  <span>#Got Item! means success</span>
 
 
   </pre>
@@ -152,6 +160,7 @@ getTaxes type, params
 </div><!--tutorial-->
 <div id="buttons">
   <button id="clear" type="button">Clear</button>
+  <button id="worlds" type="button">Toggle World</button>
   <button id="tut" type="button">Tutorial</button>
  <!-- <button id="cons" type="button">Console</button>
   <button id="out" type="button">Output</button> -->

@@ -25,6 +25,7 @@ h1 {
 #tables {
   overflow:scroll;
   height:100%;
+  display:none;
 }
 #tables table {
   font-size:12px;
