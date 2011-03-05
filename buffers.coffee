@@ -129,23 +129,38 @@ $ ->
     paper.setSize $('#canvas').width(), $('#canvas').height()
   # End hacks
 
-  window.help = ->
-    print "This is Raffi, a data visualization prototyping suite built in CoffeeScript and Raphael. Click the tutorial to learn more.  Try entering these lines into the console:"
-    print "- - - - - - - -"
-    print "- - Drawing - -"
-    print "- - - - - - - -"
-    print "c = circle(200,200,50).fill('lavender')"
-    print "c.draggable()"
-    print "grid(40)"
-    print "splat(50)"
-    print "clear()"
-    print "spiral(75)"
-    print "- - - - - - - - -"
-    print "- - Functions - -"
-    print "- - - - - - - - -"
-    print "f = (x,y) -> x*y"
-    print "f(2,3)"
-    print "f 2,3"
+  window.help = (chapter = 'help') ->
+    switch chapter
+      when 'help'
+        print "# This is Raffi:"
+        print "# Data visualization in"
+        print "# CoffeeScript and Raphael."
+        print "# "
+        print "# Built by Kai Chang and Mary Becica"
+        print "# "
+        print "# Click the tutorial to learn more.  Or type:"
+        print "# "
+        print "help 'examples'"
+        print "help 'functions'"
+        print "help 'navigation'"
+      when 'examples'
+        print "# Splatter canvas with circles"
+        print "splat 50 "
+        print "# Make a spiral"
+        print "spiral 75 "
+        print "# Clear the canvas"
+        print "clear()"
+        print "grid(40)"
+        print "c = circle(200,200,50).fill('lavender')"
+        print "c.draggable()"
+      when 'functions'
+        print "f = (x,y) -> x*y"
+        print "f(2,3)"
+        print "f 2,3"
+      when 'navigation'
+        print "# Mouse wheel to zoom."
+        print "# Grab background to pan."
+        print "# Drag and drop to move shapes."
 
   # Data Vis Competition
   window.paramDefaults =
