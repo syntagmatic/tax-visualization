@@ -129,6 +129,11 @@ ceil 5.2 <span># 6</span>
   <pre class="code">
 <span># get data</span>
 getTaxes()
+getPopulation()
+getInflation()
+getGdp()
+getDebt()
+getTaxRates()
 
 <span># The following are notes for kai and mary </span>
 
@@ -138,6 +143,10 @@ budgetTotal
 receiptAccount
 receiptTotal
 population
+inflation
+gdp
+debt
+taxRates
 
 <span># parameter defaults</span>
 year:num, 
@@ -158,10 +167,12 @@ getTaxes "budgetTotal",
 getTaxes "receiptAccount",
   year: 2009
   income: 50000
+  
   <span># If the type is a total, it is recommended to specify a group.
   # If the type is a budget, use function or subfuction.
   # If the type is a receipt, use category or subcategory.</span>
-  <span>#Got Item! means success</span>
+  <span># Population, inflation, gdp and debt param: year
+  # TaxRates params: year, type</span>
 
 
   </pre>
