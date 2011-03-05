@@ -20,4 +20,7 @@ cl  = document.getElementById "clear"
 #    console.log(e.message || e)
 
 cl.onclick = ->
-  paper.clear()
+  if $('#tables').is(':visible')
+    $('#tables').html ""
+  else
+    paper.clear()
