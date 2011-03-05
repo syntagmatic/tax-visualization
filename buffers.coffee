@@ -212,7 +212,7 @@ $ ->
       for item, i in items
         str += getItemRow i
       str += "</div></table>"
-      $('#canvas').html str
+      $('#tables').html str
     else
       print "items is not defined.  Please run getTaxes()"
 
@@ -234,7 +234,7 @@ $ ->
     str = ""
     for i in [0..12]
       str += "<b>" + nab('name', x, i) + "</b>: " + nab('value', x, i) + "<br/>"
-    $('#canvas').html str
+    $('#tables').html str
 
   window.taxes =
     budgetAccount:
