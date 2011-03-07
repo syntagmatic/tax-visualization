@@ -129,11 +129,17 @@ ceil 5.2 <span># 6</span>
   <pre class="code">
 <span># get data</span>
 getTaxes()
+
+<span># other data to get</span>
 getPopulation()
 getInflation()
 getGdp()
 getDebt()
 getTaxRates()
+
+<span># retrieve specific values via taxes.typeName.attribute </span>
+taxes.budgetAccount.account
+taxes.budgetTotal.dimensionID
 
 <span># The following are notes for kai and mary </span>
 
@@ -154,7 +160,7 @@ type: 0 - 3,
 sortdir: 0 - 1, 
 income:num, 
 filing: 0 - 4, 
-budgetGroup/receiptGroup: agency, bureau, function/category, subfunction/subcategory, 
+group: agency, bureau, function/category, subfunction/subcategory, 
 showChange: 0 - 1, 
 showExtra: 0 -1, 
 function/category:string, 
@@ -162,7 +168,7 @@ subfunction/subcategory:string
   
 <span># load data</span>
 getTaxes "budgetTotal", 
-  budgetGroup: "agency"
+  group: "agency"
   showChange:1
 getTaxes "receiptAccount",
   year: 2009
