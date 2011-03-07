@@ -46,35 +46,37 @@ $ ->
     return paramString
 
   setType = (typeName) ->
-    typeString = ""
-    if type[typeName]
-      typeString = type[typeName]
-      taxes.type = typeName
-      taxes[typeName] = {}
-    else #default calls budget account
-      typeString = type["budgetAccount"]
-      taxes.type = "budgetAccount"
-      taxes.budgetAccount = {}
+    typeString = type[typeName]
+    taxes[typeName] = {}
     return typeString
 
-  getType = ->
-    return taxes.type
-  
+  getData = (api, key) ->
+    Ajax.get(api, (data) ->
+      xml = data
+      if typeof data == 'string'
+        xml = stringToXml(data)
+      window.items = xml.getElementsByTagName('item')
+      mapTaxes(xml.getElementsByTagName('item'), key)
+      #$(window).trigger 'got_items'
+      print 'Done.'
+    )
+ 
   window.getTaxes = (typeName, params) ->
     print 'Loading taxes...'
     base = "http://www.whatwepayfor.com/api/"
+    if !type[typeName]
+      typeName = "budgetAccount"
     api  = base + setType(typeName) + setParams(params)
-    Ajax.get(api, success)
+    getData(api, typeName)
     print '...'
-   
-  success = (data) ->
-    xml = data
-    if typeof data == 'string'
-      xml = stringToXml(data)
-    window.items = xml.getElementsByTagName('item')
-    mapTaxes(items)
-    $(window).trigger 'got_items'
-    print 'Done.'
+
+  window.getAllTaxes = (params) ->
+    print 'Loading all taxes, please wait...'
+    base = "http://www.whatwepayfor.com/api/"
+    for key in _.keys(type)
+      api  = base + setType(key) + setParams(params)
+      getData(api, key)
+    print '...'
 
   # Shortcut functions
   window.getPopulation = (params) ->
@@ -92,46 +94,43 @@ $ ->
   window.getTaxRates = (params) ->
     getTaxes("taxRates", params)
 
-  nab = (method, account, attribute) ->
+  nabItem = (method, account, attribute) ->
     return items.item(account).attributes.item(attribute)[method]
 
-  methods = (account, attribute) ->
-    return items.item(account).attributes.item(attribute)
-
-  mapTaxes = (items) ->
+  mapTaxes = (items, typeName) ->
     # Converts the xml to json object
-    typeString = taxes.type
-    taxes[typeString] = []
+    print 'mapping ' + typeName
+    taxes[typeName] = []
     for item, i in items
       obj = {}
-      for a in [0...numAttributes i]
-          obj[nab('name',i,a)] = nab('value',i,a)
-      taxes[typeString].push obj
+      for a in [0...numItemAttributes i]
+          obj[nabItem('name',i,a)] = nabItem('value',i,a)
+      taxes[typeName].push obj
 
-  window.numAttributes = (account) ->
+  numItemAttributes = (account) ->
     return items.item(account).attributes.length
 
-  window.showTaxes = ->
-    if (items?)
-      str = "<table>" + getItemHeader 0
-      for item, i in items
-        str += getItemRow i
-      str += "</table>"
-      printTaxes str
-    else
-      print "items is not defined.  Please run getTaxes()"
+  numAttributes = (type) ->
+    return _.size(taxes[type][0])
 
-  getItemRow = (x) ->
+  window.showTaxes = (type) ->
+    str = "<table>" + getItemHeader(type)
+    for i in [0...numAttributes(type)]
+      str += getItemRow(type, i)
+    str += "</table>"
+    printTaxes str
+
+  getItemRow = (type, i) ->
     str = "<tr>"
-    for i in [0...numAttributes x]
-      str += "<td>" + nab('value', x, i) + "</td>"
+    for value in _.values(taxes[type][i])
+      str += "<td>" + value + "</td>"
     str += "</tr>"
     return str
 
-  getItemHeader = (x) ->
+  getItemHeader = (type) ->
     str = "<tr>"
-    for i in [0...numAttributes x]
-      str += "<th>" + nab('name', x, i) + "</th>"
+    for key in _.keys(taxes[type][0])
+      str += "<th>" + key + "</th>"
     str += "</tr>"
     return str
 
@@ -149,5 +148,3 @@ $ ->
     for i in [0..12]
       str += "<b>" + nab('name', x, i) + "</b>: " + nab('value', x, i) + "<br/>"
     $('#tables').html str
-
-    
