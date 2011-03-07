@@ -51,17 +51,19 @@ $ ->
     return typeString
 
   window.getTaxes = (typeName, params) ->
+    print 'Loading taxes...'
     base = "http://www.whatwepayfor.com/api/"
     api  = base + setType(typeName) + setParams(params)
     Ajax.get(api, success)
+    print '...'
    
   success = (data) ->
-    print 'got items!'
     xml = data
     if typeof data == 'string'
       xml = stringToXml(data)
     window.items = xml.getElementsByTagName('item')
     $(window).trigger 'got_items'
+    print 'Done.'
 
   # Shortcut functions
   window.getPopulation = (params) ->
