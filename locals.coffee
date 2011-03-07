@@ -1,4 +1,4 @@
-init2 = ->
+do ->
   paper = Raphael("canvas", $('#canvas').width(), $('#canvas').height())
   window.zpd = new RaphaelZPD(paper, { zoom: true, pan: true, drag: true })
   window.paper = paper
@@ -133,6 +133,7 @@ init2 = ->
         this.attr obj
   
   # basic drag and drop
+  # not needed with raphael-zpd plugin
   start = ->
     # storing original coordinates
     this.ox = this.attr("cx")
@@ -144,6 +145,15 @@ init2 = ->
     # restoring state
   Raphael.el.draggable = ->
     this.drag(move,start,up)
+
+  # associates size with color
+  # for bubble charts, takes values 0-32
+  Raphael.el.bubble = (value) ->
+    red = 8*(32-value)
+    green = 8*value
+    this.attr
+      r: value
+      fill: "rgb(#{red}, #{green}, 0)"
 
 randomPath = (length, j, dotsy) ->
   random_path = ""
