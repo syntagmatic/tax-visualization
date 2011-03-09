@@ -9,6 +9,7 @@ _out,
 tooManyMatches = null,
 lastError = null;
 
+
 function refocus()
 {
   _in.blur(); // Needed for Mozilla to scroll correctly.
@@ -670,6 +671,7 @@ function go(s)
   histList[histList.length-1] = question;
   histList[histList.length] = "";
   histPos = histList.length - 1;
+  saveHistory();
   
   // Unfortunately, this has to happen *before* the JavaScript is run, so that 
   // print() output will go in the right place.
@@ -721,3 +723,18 @@ function scrollToBottom(elm_id)
     }
   }
 
+
+function saveHistory() {
+  localStorage["histList"] = histList;
+  localStorage["histPos"] = histPos;
+}
+
+function getHistory() {
+  if (localStorage["histList"]) {
+    histList = localStorage["histList"];
+    histPos = localStorage["histPos"];
+  }
+}
+
+// Get previous shell commands
+getHistory();
