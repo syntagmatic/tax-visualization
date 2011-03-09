@@ -725,16 +725,22 @@ function scrollToBottom(elm_id)
 
 
 function saveHistory() {
-  localStorage["histList"] = histList;
-  localStorage["histPos"] = histPos;
+    var num = histPos-1
+        localStorage["histList" + num] = histList[num];
+      console.log(histList[num]);
 }
 
 function getHistory() {
-  if (localStorage["histList"]) {
-    histList = localStorage["histList"];
-    histPos = localStorage["histPos"];
-  }
+    if (localStorage["histList0"]) {
+          histList = [];
+              for (var i=0; i < localStorage.length; i++) {
+                      histList.push(localStorage["histList" + i]);
+                          }
+                  histList.push("");
+                      histPos = histList.length - 1
+                          }
 }
 
 // Get previous shell commands
-getHistory();
+// getHistory();
+//
