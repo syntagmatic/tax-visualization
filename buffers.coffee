@@ -32,6 +32,11 @@ $ ->
         scale: 1
     "Splat!"
 
+  window.punchcard = (width, height) ->
+    for i in [1..width]
+      for j in [1..height]
+        circle(32*i,32*j,3).bubble pow(5.2*random(),2)
+
   window.spiral = (n, x=600, y=500) ->
 
     posx = (i) -> x + 9*i*sin(pi/12*i)

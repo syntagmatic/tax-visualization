@@ -153,8 +153,9 @@ do ->
     red = 8*(32-value)
     green = 8*value
     this.attr
-      r: value
+      r: value/2
       fill: "rgb(#{red}, #{green}, 0)"
+      stroke: 0
 
 randomPath = (length, j, dotsy) ->
   random_path = ""
