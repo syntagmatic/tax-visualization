@@ -727,7 +727,6 @@ function scrollToBottom(elm_id)
 function saveHistory() {
     var num = histPos-1
         localStorage["histList" + num] = histList[num];
-      console.log(histList[num]);
 }
 
 function getHistory() {

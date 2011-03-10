@@ -32,11 +32,11 @@ $ ->
         scale: 1
     "Splat!"
 
-  window.spiral = (n) ->
+  window.spiral = (n, x=600, y=500) ->
 
-    posx = (x) -> 600 + 9*i*sin(pi/12*i)
-    posy = (x) -> 500 + 9*i*cos(pi/12*i)
-    size = (x) -> x/2 + 1
+    posx = (i) -> x + 9*i*sin(pi/12*i)
+    posy = (i) -> y + 9*i*cos(pi/12*i)
+    size = (i) -> i/2 + 1
 
     circles = set()
     for i in [1..n]
