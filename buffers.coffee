@@ -36,6 +36,7 @@ $ ->
     for i in [1..width]
       for j in [1..height]
         circle(32*i,32*j,3).bubble pow(5.2*random(),2)
+    "Take that, card!"
 
   window.spiral = (n, x=600, y=500) ->
 
@@ -129,6 +130,7 @@ $ ->
           "#tables", "#canvas")
 
   # Resize Hacks
+  $('#output').css 'max-height': $(window).height() - 130
   $(window).bind "resize", ->
     $('#output').css 'max-height': $(window).height() - 130
     paper.setSize $('#canvas').width(), $('#canvas').height()
