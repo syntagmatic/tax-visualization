@@ -47,17 +47,19 @@ $ ->
 
   setType = (typeName) ->
     typeString = type[typeName]
+    taxes.type = typeName
     taxes[typeName] = {}
     return typeString
 
-  getData = (api, key) ->
+  getData = (api, key, show) ->
     Ajax.get(api, (data) ->
       xml = data
       if typeof data == 'string'
         xml = stringToXml(data)
       window.items = xml.getElementsByTagName('item')
       mapTaxes(xml.getElementsByTagName('item'), key)
-      #$(window).trigger 'got_items'
+      if (show)
+        $(window).trigger 'got_items'
       print 'Done.'
     )
  
@@ -67,7 +69,7 @@ $ ->
     if !type[typeName]
       typeName = "budgetAccount"
     api  = base + setType(typeName) + setParams(params)
-    getData(api, typeName)
+    getData(api, typeName, true)
     print '...'
 
   window.getAllTaxes = (params) ->
@@ -75,7 +77,7 @@ $ ->
     base = "http://www.whatwepayfor.com/api/"
     for key in _.keys(type)
       api  = base + setType(key) + setParams(params)
-      getData(api, key)
+      getData(api, key, false)
     print '...'
 
   # Shortcut functions
@@ -111,9 +113,11 @@ $ ->
     return items.item(account).attributes.length
 
   numAttributes = (type) ->
-    return _.size(taxes[type][0])
+    return _.size(taxes[type])
 
   window.showTaxes = (type) ->
+    if (_.isUndefined(type))
+      type = taxes.type
     str = "<table>" + getItemHeader(type)
     for i in [0...numAttributes(type)]
       str += getItemRow(type, i)
