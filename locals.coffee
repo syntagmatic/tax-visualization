@@ -1,15 +1,13 @@
 do ->
   paper = Raphael("canvas", $('#canvas').width(), $('#canvas').height())
-  window.zpd = new RaphaelZPD(paper, { zoom: true, pan: true, drag: true })
+  window.zpd = new RaphaelZPD(paper, { zoom: true, pan: true, drag: false })
   paper.ZPDPanTo 360, 0
   window.paper = paper
   width = "100%"
   height = "100%"
-  c = paper.rect(0, 0, "100%", "100%", 0).attr
-    stroke: "none"
   Raphael.getColor.reset()
-  cwidth = c.getBBox().width
-  cheight = c.getBBox().height
+  cwidth = $('#canvas').width()
+  cheight = $('#canvas').height()
 
   # math
   window.abs = Math.abs
