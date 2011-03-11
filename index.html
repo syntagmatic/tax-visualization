@@ -128,8 +128,12 @@ ceil 5.2 <span># 6</span>
   </pre>
   <p>Data Visualization Competition</p>
   <pre class="code">
-<span># get data</span>
-getTaxes()
+<span># get all data</span>
+getAllTaxes()
+<span># then show some data</span>
+showTaxes("budgetAccount")
+<span># or, just get some data</span>
+getTaxes("budgetAccount")
 
 <span># other data to get</span>
 getPopulation()
@@ -137,10 +141,6 @@ getInflation()
 getGdp()
 getDebt()
 getTaxRates()
-
-<span># retrieve specific values via taxes.typeName.attribute </span>
-taxes.budgetAccount.account
-taxes.budgetTotal.dimensionID
 
 <span># The following are notes for kai and mary </span>
 
