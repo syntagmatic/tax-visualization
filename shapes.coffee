@@ -3,15 +3,13 @@ window.conns = {}
 window.dragged = false
 window.selected = false
 
-Raphael.fn.createShape = do ->
+[Raphael.fn.createShape, Raphael.fn.createConn] = do ->
 
   # shapes
 
-  createShape = (i,type,xpos,ypos,width,height) ->
-    switch type
-      when "rect"
-        shapes.push this.rect(xpos, ypos, width, height, 3)
-        newShape(i)
+  createShape = (xpos=50,ypos=50,width=50,height=50) ->
+    shapes.push this.rect(xpos, ypos, width, height, 3)
+    newShape(shapes.length-1)
 
   selectShape = (i) ->
     selected = i
@@ -33,8 +31,6 @@ Raphael.fn.createShape = do ->
       "stroke-width" : 1
       "stroke-opacity" : 0.8
     shapes[i].node.style.cursor = "move"
-    shapes[i].click(clicker)
-    shapes[i].drag(move,down,up)
     conns[i] = {}
   
 
@@ -85,31 +81,4 @@ Raphael.fn.createShape = do ->
       to: b
     }
 
-
-  # interactions
-
-  clicker = ->
-    if selected isnt false
-      if selected != this.id
-        selectConn(selected,this.id)
-      else
-        this.toBack()
-      deselectShape(selected)
-    else if not dragged
-      selectShape(this.id)
-      this.toFront()
-    else
-      dragged = false
-
-  down = () ->
-    this.ox = this.attr "x"
-    this.oy = this.attr "y"
-    
-  move = (dx,dy) ->
-    this.attr({x: this.ox + dx, y: this.oy + dy})
-    syncConnections(this.id)
-    dragged = true
-
-  up = () ->
-
-  return createShape
+  return [createShape, createConn]

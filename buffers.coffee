@@ -55,6 +55,17 @@ $ ->
         "stroke-opacity": 0
     "Far out!"
 
+  window.network = ->
+    for i in [1..10]
+      for j in [1..10]
+        shape 60*i, 60*j, 20, 20
+
+    for _ in [1..30]
+      x = round 100*random()
+      y = round 100*random()
+      link x, y
+    "Link up!"
+
   window.chart = ->
 
     values = []
@@ -79,11 +90,11 @@ $ ->
     inc = pi/24         # increment size
     width = 600         # window width
     zoom = 120          # amplitude multiplier
-    ox = 400            # x of origin
+    ox = 100            # x of origin
     oy = 400            # y of origin
 
     num = (max-min) / inc
-    points = []
+    points = set()
     point = (x,y) -> circle(x,y,3)
     for i in [0..num]
       x = (inc*i + min)
@@ -91,8 +102,8 @@ $ ->
       points.push point(x*(width/num/inc) + ox, y*zoom + oy)
     
     points.attr
-      fill: "#999"
-      stroke: "#999"
+      fill: getColor()
+      stroke: 0
     "A sinusoid"
   
   

@@ -1,6 +1,6 @@
 do ->
   paper = Raphael("canvas", $('#canvas').width(), $('#canvas').height())
-  window.zpd = new RaphaelZPD(paper, { zoom: true, pan: true, drag: false })
+  window.zpd = new RaphaelZPD(paper, { zoom: true, pan: true, drag: true})
   paper.ZPDPanTo 360, 0
   window.paper = paper
   width = "100%"
@@ -45,6 +45,10 @@ do ->
   window.getColor = -> Raphael.getColor()
   window.set = -> paper.set()
   window.clear = -> paper.clear()
+
+  # connect shapes
+  window.shape = paper.createShape
+  window.link = paper.createConn
 
   # axis, tics, labels
   window.axis = (width,height,ticwidth) ->
