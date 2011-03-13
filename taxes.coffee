@@ -1,6 +1,8 @@
 $ ->
   #data object
   window.taxes = {}
+  $(window).bind 'got_items', ->
+    showTaxes() 
   
   # Data Vis Competition
   window.paramDefaults =
@@ -18,12 +20,6 @@ $ ->
     category: 0
     subcategory: 0
   
-  query = (key, val, counter) ->
-    if counter is 0
-      return "?#{key}=#{val}"
-    else
-      return "&#{key}=#{val}"
-
   type =
     budgetAccount: "getBudgetAccount/"
     budgetTotal: "getBudgetAggregate/"
@@ -35,14 +31,22 @@ $ ->
     debt: "getDebt/"
     taxRates: "getTaxRates/"
 
+  query = (key, val, counter) ->
+    if counter is 0
+      return "?#{key}=#{val}"
+    else
+      return "&#{key}=#{val}"
+
   setParams = (params) ->
     paramString = ""
     i = 0
     for key, val of params
       paramString += query(key, val, i)
       i++
-    if !params? #default calls year
+    if not params? #default calls year
       paramString += query("year", "2010", 0)
+    else if not _.include(_.keys(params), "year") #if year was not included
+      paramString += query("year", "2010", 1)
     return paramString
 
   setType = (typeName) ->
@@ -72,14 +76,34 @@ $ ->
     getData(api, typeName, true)
     print '...'
 
+  window.apis = {}
   window.getAllTaxes = (params) ->
     print 'Loading all taxes, please wait...'
     base = "http://www.whatwepayfor.com/api/"
-    for key in _.keys(type)
-      api  = base + setType(key) + setParams(params)
-      getData(api, key, false)
+    for typeKey in _.keys(type)
+      if (typeKey is "budgetTotal")
+        #For totals, get each group object
+        for i in paramDefaults.budgetGroup
+          params =
+            group: i
+          apiString = base + setType(typeKey) + setParams(params)
+          apis[apiString] = typeKey
+          params = undefined
+      if (typeKey is "receiptTotal")
+        #For totals, get each group object
+        for i in paramDefaults.receiptGroup
+          params =
+            group: i
+          apiString = base + setType(typeKey) + setParams(params)
+          apis[apiString] = typeKey
+          params = undefined
+      else
+        apiString = base + setType(typeKey) + setParams(params)
+        apis[apiString] = typeKey
+    for key, val of apis
+      getData(key, val, false)
     print '...'
-
+  
   # Shortcut functions
   window.getPopulation = (params) ->
     getTaxes("population", params)
@@ -117,6 +141,7 @@ $ ->
 
   window.showTaxes = (type) ->
     if (_.isUndefined(type))
+      # showTaxes works for allTaxes or specific calls
       type = taxes.type
     str = "<table>" + getItemHeader(type)
     for i in [0...numAttributes(type)]
@@ -144,11 +169,4 @@ $ ->
       $('#tables').fadeToggle()
       $('#canvas').fadeToggle()
 
-  $(window).bind 'got_items', ->
-    showTaxes()
-  
-  window.expose = (x) ->
-    str = ""
-    for i in [0..12]
-      str += "<b>" + nab('name', x, i) + "</b>: " + nab('value', x, i) + "<br/>"
-    $('#tables').html str
+
