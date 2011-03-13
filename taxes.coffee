@@ -1,16 +1,18 @@
 $ ->
   #data object
   window.taxes = {}
+  window.apis = {}
   $(window).bind 'got_items', ->
-    showTaxes() 
+    showTaxes()
   
   # Data Vis Competition
   window.paramDefaults =
-    year: 2010     # 1984 - 2015
-    type: 0        # 0 - 3
-    sortdir: false
+    year: [1984..2015]
+    type: [0..3]
+    sortby: [0..3] #don't care about this yet
+    sortdir: false #don't care about this yet
     income: 5000000
-    filing: 0      # 0 - 4
+    filing: [0..4]
     budgetGroup: ["agency", "bureau", "function", "subfunction"]
     receiptGroup: ["agency", "bureau", "category", "subcategory"]
     showChange: 0
@@ -67,6 +69,26 @@ $ ->
       print 'Done.'
     )
  
+  paramIncluded = (paramName, base, typeKey) ->
+    #Returns api call for each value of parameter
+    #assumes no parameters have been specified from console
+    params = {}
+    print paramName
+    print paramDefaults[paramName]
+    for i in paramDefaults[paramName]
+      if paramName is "budgetGroup" or "receiptGroup"
+        #special case for totals
+        paramName = "group"
+      params[paramName] = i
+      apiString = base + setType(typeKey) + setParams(params)
+      print apiString
+      params = undefined
+      return apiString
+ 
+  getVariedParams = ->
+    for i of variedParams
+      paramIncluded i
+
   window.getTaxes = (typeName, params) ->
     print 'Loading taxes...'
     base = "http://www.whatwepayfor.com/api/"
@@ -76,32 +98,28 @@ $ ->
     getData(api, typeName, true)
     print '...'
 
-  window.apis = {}
   window.getAllTaxes = (params) ->
     print 'Loading all taxes, please wait...'
     base = "http://www.whatwepayfor.com/api/"
     for typeKey in _.keys(type)
       if (typeKey is "budgetTotal")
-        #For totals, get each group object
-        for i in paramDefaults.budgetGroup
-          params =
-            group: i
-          apiString = base + setType(typeKey) + setParams(params)
-          apis[apiString] = typeKey
-          params = undefined
-      if (typeKey is "receiptTotal")
-        #For totals, get each group object
-        for i in paramDefaults.receiptGroup
-          params =
-            group: i
-          apiString = base + setType(typeKey) + setParams(params)
-          apis[apiString] = typeKey
-          params = undefined
+        #For totals, group object has specific name
+        apiString = paramIncluded("budgetGroup", base, typeKey)
+        apis[apiString] = typeKey
+      else if (typeKey is "receiptTotal")
+        #For totals, group object has specific name
+        apiString = paramIncluded("recieptGroup", base, typeKey)
+        apis[apiString] = typeKey
+      else if (typeKey is "taxRates")
+        apiString = paramIncluded("type", base, typeKey)
+        apis[apiString] = typeKey
       else
+        #population, gdp, debt, inflation
         apiString = base + setType(typeKey) + setParams(params)
         apis[apiString] = typeKey
-    for key, val of apis
-      getData(key, val, false)
+    print apis
+    #for key, val of apis
+    #  getData(key, val, false)
     print '...'
   
   # Shortcut functions
