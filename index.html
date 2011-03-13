@@ -131,8 +131,11 @@ ceil 5.2 <span># 6</span>
 <span># get all data</span>
 getAllTaxes()
 <span># then show some data</span>
-showTaxes("budgetAccount")
-<span># or, just get some data</span>
+showTaxes taxes.budgetAccount
+<span># get a 2d list of an attribute</span>
+getColumn taxes.budgetAccount, "agency"
+
+<span># or, just get a little bit of data</span>
 getTaxes("budgetAccount")
 
 <span># other data to get</span>
@@ -142,7 +145,7 @@ getGdp()
 getDebt()
 getTaxRates()
 
-<span># The following are notes for kai and mary </span>
+<span># Some notes </span>
 
 <span># type attributes</span>
 budgetAccount
@@ -166,14 +169,6 @@ showChange: 0 - 1,
 showExtra: 0 -1, 
 function/category:string, 
 subfunction/subcategory:string
-  
-<span># load data</span>
-getTaxes "budgetTotal", 
-  group: "agency"
-  showChange:1
-getTaxes "receiptAccount",
-  year: 2009
-  income: 50000
   
   <span># If the type is a total, it is recommended to specify a group.
   # If the type is a budget, use function or subfuction.

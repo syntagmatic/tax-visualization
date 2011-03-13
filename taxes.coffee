@@ -125,9 +125,9 @@ $ ->
 
   mapTaxes = (items, typeName) ->
     # Converts the xml to json object
-    print 'mapping ' + typeName
     if not taxes[typeName][0]?
       taxes[typeName] = []
+      print 'mapping ' + typeName
     #TODO: map totals with subobjects
     for item, i in items
       obj = {}
@@ -139,28 +139,28 @@ $ ->
     return items.item(account).attributes.length
 
   numAttributes = (type) ->
-    return _.size(taxes[type])
+    return _.size(type)
 
-  window.showTaxes = (type) ->
-    if (_.isUndefined(type))
+  window.showTaxes = (typeObj) ->
+    if (_.isUndefined(typeObj))
       # showTaxes works for allTaxes or specific calls
-      type = taxes.type
-    str = "<table>" + getItemHeader(type)
-    for i in [0...numAttributes(type)]
-      str += getItemRow(type, i)
+      typeObj = taxes.type
+    str = "<table>" + getItemHeader(typeObj)
+    for i in [0...numAttributes(typeObj)]
+      str += getItemRow(typeObj, i)
     str += "</table>"
     printTaxes str
 
   getItemRow = (type, i) ->
     str = "<tr>"
-    for value in _.values(taxes[type][i])
+    for value in _.values(type[i])
       str += "<td>" + value + "</td>"
     str += "</tr>"
     return str
 
   getItemHeader = (type) ->
     str = "<tr>"
-    for key in _.keys(taxes[type][0])
+    for key in _.keys(type[0])
       str += "<th>" + key + "</th>"
     str += "</tr>"
     return str
@@ -171,4 +171,9 @@ $ ->
       $('#tables').fadeToggle()
       $('#canvas').fadeToggle()
 
-
+  window.getColumn = (typeObj, attr) ->
+    # This outputs a list for graphing
+    col = []
+    for i of typeObj
+      col.push typeObj[i][attr]
+    return col
