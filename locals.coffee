@@ -1,6 +1,6 @@
 do ->
   paper = Raphael("canvas", $('#canvas').width(), $('#canvas').height())
-  window.zpd = new RaphaelZPD(paper, { zoom: true, pan: true, drag: true})
+  window.zpd = new RaphaelZPD(paper, { zoom: true, pan: true, drag: false})
   paper.ZPDPanTo 360, 0
   window.paper = paper
   width = "100%"
@@ -28,6 +28,9 @@ do ->
   window.sin = Math.sin
   window.sqrt = Math.sqrt
   window.tan = Math.tan
+
+  # jquery
+  window.background = (color) -> $('body').css {background: color}
 
   # raphael
   window.circle = (x,y,r) ->

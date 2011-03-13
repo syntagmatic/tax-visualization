@@ -1,23 +1,24 @@
 window.shapes = []
 window.conns = {}
-window.dragged = false
-window.selected = false
 
 [Raphael.fn.createShape, Raphael.fn.createConn] = do ->
+  selected = false
 
   # shapes
 
   createShape = (xpos=50,ypos=50,width=50,height=50) ->
     shapes.push this.rect(xpos, ypos, width, height, 3)
     newShape(shapes.length-1)
-
+    
   selectShape = (i) ->
-    selected = i
-    shapes[i].animate({"fill-opacity": 0.9}, 500)
-
-  deselectShape = (i) ->
-    selected = false
-    shapes[i].animate({"fill-opacity": 0.8}, 140)
+    if selected is false
+      selected = i
+      shapes[i].attr "fill-opacity": 0.6
+    else if i is selected
+      selected = false
+      shapes[i].attr "fill-opacity": 0.1
+    else
+      createConn selected, i
 
   destroyShape = (i) ->
     # TODO
@@ -26,12 +27,18 @@ window.selected = false
     color = Raphael.getColor()
     shapes[i].attr
       "fill" : color
-      "fill-opacity" : 0.8
+      "fill-opacity" : 0.1
       "stroke" : color
       "stroke-width" : 1
       "stroke-opacity" : 0.8
+    shapes[i].cid = i
     shapes[i].node.style.cursor = "move"
+    shapes[i].hover (-> if i isnt selected then this.attr 'fill-opacity' : 0.3),
+                    (-> if i isnt selected then this.attr 'fill-opacity' : 0.1)
+    shapes[i].click ->
+      selectShape i
     conns[i] = {}
+    shapes[i]
   
 
   # connections
@@ -68,15 +75,16 @@ window.selected = false
   drawConn = (a, b, color) ->
     bb1 = a.getBBox()
     bb2 = b.getBBox()
-    path = ["M", bb1.x+(bb1.width/2), bb1.y+(bb1.height/2),
-            "L", bb2.x+(bb2.width/2), bb2.y+(bb2.height/2)].join(",")
+    path = ["M", bb1.x+(bb1.width), bb1.y+(bb1.height/2),
+            "Q", (2*bb1.x+1.5*bb1.width+bb2.x)/3, bb1.y+bb1.height/2, (bb1.x+bb1.width+bb2.x)/2, (bb1.y+bb2.y+bb1.height)/2,
+            "Q", (bb1.x+1.5*bb1.width+2*bb2.x)/3, bb2.y+bb2.height/2, bb2.x, bb2.y+(bb2.height/2)].join(",")
     return {
       line: paper.path(path).attr
         stroke: color
         fill: "none"
         "stroke-width": 2
         "stroke-dasharray": "."
-        "stroke-opacity":0.8
+        "stroke-opacity": 0.8
       from: a
       to: b
     }

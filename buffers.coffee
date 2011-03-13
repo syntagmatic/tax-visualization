@@ -39,7 +39,6 @@ $ ->
     "Take that, card!"
 
   window.spiral = (n, x=600, y=500) ->
-
     posx = (i) -> x + 9*i*sin(pi/12*i)
     posy = (i) -> y + 9*i*cos(pi/12*i)
     size = (i) -> i/2 + 1
@@ -61,13 +60,25 @@ $ ->
         shape 60*i, 60*j, 20, 20
 
     for _ in [1..30]
-      x = round 100*random()
-      y = round 100*random()
+      x = round 99*random()
+      y = round 99*random()
       link x, y
     "Link up!"
 
-  window.chart = ->
+  window.objectShape = (name, props=[], x=50, y=50) ->
+    rect(x,y,150,24+50*props.length,12).attr
+      fill: "#222"
+      stroke: "#333"
+    text(x+75,y+12,name).attr
+      'font-size': 14
+      'fill': '#fff'
+    for prop, i in props
+      shape x+15, y+28+50*i, 120, 30
+      text(x+75,y+43+50*i,prop).attr
+        'font-size': 14
+        'fill': '#fff'
 
+  window.chart = ->
     values = []
     dotsy = []
     clr = []
