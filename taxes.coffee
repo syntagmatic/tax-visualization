@@ -126,7 +126,9 @@ $ ->
   mapTaxes = (items, typeName) ->
     # Converts the xml to json object
     print 'mapping ' + typeName
-    taxes[typeName] = []
+    if not taxes[typeName][0]?
+      taxes[typeName] = []
+    #TODO: map totals with subobjects
     for item, i in items
       obj = {}
       for a in [0...numItemAttributes i]
