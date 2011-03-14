@@ -66,11 +66,13 @@ $ ->
 
   getData = (api, paramInfo, show) ->
     Ajax.get(api, (data) ->
+      print api
       xml = data
       if typeof data == 'string'
         xml = stringToXml(data)
       window.items = xml.getElementsByTagName('item')
-      mapTaxes(xml.getElementsByTagName('item'), paramInfo)
+      print paramInfo
+      #mapTaxes(xml.getElementsByTagName('item'), paramInfo)
       if (show)
         $(window).trigger 'got_items'
       print 'Done.'
@@ -83,7 +85,7 @@ $ ->
     for paramName in paramNames
       for i in defaults[paramName]
         params = {}
-        if paramName in ["budgetGroup", "receiptGroup"] 
+        if paramName in ["budgetGroup", "receiptGroup"]
           #special case for totals
           paramName = "group"
         if not apiList[paramName]?
@@ -110,16 +112,17 @@ $ ->
     #Get a data from a list of all api calls
     print 'Loading all taxes, please wait...'
     base = "http://www.whatwepayfor.com/api/"
-    #for typeKey in _.keys(type)
-    typeKey = "budgetTotal"
-    apiList = paramList(defaultAttribs[typeKey], base, typeKey)
-    for attrib of apiList
-      #map type and attributes to api 
-      for api in apiList[attrib]
-        apis[api] = [typeKey, attrib]
-    #end of should-be indent
+    for typeKey in _.keys(type)
+      apiList = paramList(defaultAttribs[typeKey], base, typeKey)
+      for attrib of apiList
+        #map type and attributes to api 
+        for api in apiList[attrib]
+          apis[api] = [typeKey, attrib]
+          print apis[api][0]
+        print 'bigger ' + apis[api][0]
     for api of apis
-      getData(api, apis[api], false)
+      print apis[api][0]
+      #getData(api, apis[api], false)
     print '...'
   
   # Shortcut functions
@@ -148,7 +151,6 @@ $ ->
     params = callInfo[1]
     if not taxes[typeName][0]?
       taxes[typeName] = []
-    print 'mapping ' + typeName + ', ' + params
     #TODO: map with multiple params 
     if params is "group"
       if not taxes[typeName][params]?
