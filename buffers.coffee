@@ -81,7 +81,21 @@ $ ->
     else
       return '#444'
 
-        
+  objecty = (name, value, x, y, height, boxContainer) ->
+    color = typeColor value
+    shape(x, y, 130, height).attr
+      'fill': color
+      'stroke': color
+    text(x+65, y+15, name).attr
+      'font-size': 14
+      'fill': '#fff'
+    text(x+65, y+35, type value)
+      .attr
+        'font-size': 14
+        'fill': color
+        'cursor': 'pointer'
+      .click ->
+        print value
 
   window.classy = (name, obj={}, opts={}) ->
     length = _(obj).keys().length
@@ -97,24 +111,16 @@ $ ->
     rect( x, y, 150, 24+boxContainer*length, 12).attr
       fill: "#222"
       stroke: "#333"
-    text(x+75,y+12,name).attr
+    text(x+75, y+12, name).attr
       'font-size': 14
       'fill': '#fff'
 
     # each property
     i = 0
     for key, value of obj
-      color = typeColor value
-      shape(x+15, y+28+boxContainer*i, 120, boxHeight).attr
-        'fill': color
-        'stroke': color
-      text(x+75,y+43+boxContainer*i,key).attr
-        'font-size': 14
-        'fill': '#fff'
-      text(x+75,y+63+boxContainer*i,type value).attr
-        'font-size': 14
-        'fill': color
+      objecty(key, value, x+padding, y+28+boxContainer*i, boxHeight, boxContainer)
       i++
+    name
 
   window.chart = ->
     values = []
@@ -227,4 +233,4 @@ $ ->
       when 'navigation'
         print "# Mouse wheel to zoom."
         print "# Grab background to pan."
-        print "# Drag and drop to move shapes."
+        #print "# Drag and drop to move shapes."
