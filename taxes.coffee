@@ -6,18 +6,29 @@ $ ->
     showTaxes()
   
   # Data Vis Competition
-  window.paramDefaults =
+  window.defaults =
     year: [1984..2015]
     type: [0..3]
     sortby: [0..3] #don't care about this yet
     sortdir: false #don't care about this yet
     income: 5000000
-    filing: [0..4]
+    filing: [0..3]
     budgetGroup: ["agency", "bureau", "function", "subfunction"]
     receiptGroup: ["agency", "bureau", "category", "subcategory"]
     showChange: 0
     showExtra: 0
-  
+ 
+  defaultAttribs =
+    budgetAccount: ["year", "type", "filing"]
+    budgetTotal: ["year", "type", "filing", "budgetGroup"]
+    receiptAccount: ["year", "type", "filing"]
+    receiptTotal: ["year", "type", "filing", "receiptGroup"]
+    taxRates: ["year", "type"]
+    population: ["year"]
+    inflation: ["year"]
+    gdp: ["year"]
+    debt: ["year"]
+
   type =
     budgetAccount: "getBudgetAccount/"
     budgetTotal: "getBudgetAggregate/"
@@ -53,32 +64,34 @@ $ ->
     taxes[typeName] = {}
     return typeString
 
-  getData = (api, key, show) ->
+  getData = (api, paramInfo, show) ->
     Ajax.get(api, (data) ->
       xml = data
       if typeof data == 'string'
         xml = stringToXml(data)
       window.items = xml.getElementsByTagName('item')
-      mapTaxes(xml.getElementsByTagName('item'), key)
+      mapTaxes(xml.getElementsByTagName('item'), paramInfo)
       if (show)
         $(window).trigger 'got_items'
       print 'Done.'
     )
  
-  paramList = (paramName, base, typeKey) ->
-    #Returns api call for each value of parameter
+  window.apiList = {}
+  paramList = (paramNames, base, typeKey) ->
+    #Generates a list of api url strings for each value of parameter
     #assumes no parameters have been specified from console
-    print paramName
-    for i in paramDefaults[paramName]
-      print 'key: ' + i
-      params = {}
-      if paramName in ["budgetGroup", "receiptGroup"]
-        #special case for totals
-        paramName = "group"
-      params[paramName] = i
-      apiString = base + setType(typeKey) + setParams(params)
-      params = undefined
-      return apiString
+    for paramName in paramNames
+      for i in defaults[paramName]
+        params = {}
+        if paramName in ["budgetGroup", "receiptGroup"] 
+          #special case for totals
+          paramName = "group"
+        if not apiList[paramName]?
+          apiList[paramName] = []
+        params[paramName] = i
+        apiList[paramName].push base + setType(typeKey) + setParams(params)
+        params = undefined
+    return apiList
  
   getVariedParams = ->
     for i of variedParams
@@ -94,32 +107,19 @@ $ ->
     print '...'
 
   window.getAllTaxes = (params) ->
+    #Get a data from a list of all api calls
     print 'Loading all taxes, please wait...'
     base = "http://www.whatwepayfor.com/api/"
-    for typeKey in _.keys(type)
-      if (typeKey is "budgetTotal")
-        #For totals, group object has specific name
-        apiString = paramList("budgetGroup", base, typeKey)
-        print 'bT: ' + apiString
-        apis[apiString] = typeKey
-      ###
-      else if (typeKey is "receiptTotal")
-        #For totals, group object has specific name
-        apiString = paramList("receiptGroup", base, typeKey)
-        print 'rT: ' + apiString
-        apis[apiString] = typeKey
-      else if (typeKey is "taxRates")
-        apiString = paramList("type", base, typeKey)
-        print 'tR: ' + apiString
-        apis[apiString] = typeKey
-      else
-        #population, gdp, debt, inflation
-        apiString = base + setType(typeKey) + setParams(params)
-        apis[apiString] = typeKey
-      ###
-    #for key, val of apis
-    #  print key
-    #  getData(key, val, false)
+    #for typeKey in _.keys(type)
+    typeKey = "budgetTotal"
+    apiList = paramList(defaultAttribs[typeKey], base, typeKey)
+    for attrib of apiList
+      #map type and attributes to api 
+      for api in apiList[attrib]
+        apis[api] = [typeKey, attrib]
+    #end of should-be indent
+    for api of apis
+      getData(api, apis[api], false)
     print '...'
   
   # Shortcut functions
@@ -141,17 +141,30 @@ $ ->
   nabItem = (method, account, attribute) ->
     return items.item(account).attributes.item(attribute)[method]
 
-  mapTaxes = (items, typeName) ->
+  mapTaxes = (items, callInfo) ->
     # Converts the xml to json object
+    # Call info is type, param
+    typeName = callInfo[0]
+    params = callInfo[1]
     if not taxes[typeName][0]?
       taxes[typeName] = []
-      print 'mapping ' + typeName
-    #TODO: map totals with subobjects
-    for item, i in items
-      obj = {}
-      for a in [0...numItemAttributes i]
-          obj[nabItem('name',i,a)] = nabItem('value',i,a)
+    print 'mapping ' + typeName + ', ' + params
+    #TODO: map with multiple params 
+    if params is "group"
+      if not taxes[typeName][params]?
+        taxes[typeName][params] = []
+      obj = mapAttribs items
+      taxes[typeName][params].push obj
+    else
+      obj = mapAttribs items
       taxes[typeName].push obj
+  
+  mapAttribs = (items) ->
+    obj = {}
+    for item, i in items
+      for a in [0...numItemAttributes i]
+        obj[nabItem('name',i,a)] = nabItem('value',i,a)
+    return obj
 
   numItemAttributes = (account) ->
     return items.item(account).attributes.length
