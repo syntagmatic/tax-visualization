@@ -222,7 +222,7 @@ $ ->
   $('#output').css 'max-height': $(window).height() - 130
   $(window).bind "resize", ->
     $('#output').css 'max-height': $(window).height() - 130
-    paper.setSize $('#canvas').width(), $('#canvas').height()
+    $('#canvas > svg').width($('#canvas').width()).height($('#canvas').height())
   # End hacks
 
   window.help = (chapter = 'help') ->
