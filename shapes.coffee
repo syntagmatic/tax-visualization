@@ -6,8 +6,8 @@ window.conns = {}
 
   # shapes
 
-  createShape = (xpos=50,ypos=50,width=50,height=50) ->
-    shapes.push this.rect(xpos, ypos, width, height, 3)
+  createShape = (x=50,y=50,width=50,height=50) ->
+    shapes.push this.rect(x, y, width, height, 3)
     newShape(shapes.length-1)
     
   selectShape = (i) ->
