@@ -80,6 +80,29 @@ $ ->
       return '#FF8C4C'
     else
       return '#444'
+    
+  typeGo = (object) ->
+    # used to enter javascript into the console from elsewhere
+    # this is all quite hacky
+    if (type object) is 'array'
+      return go '[' + object + ']'
+    if (type object) is 'number'
+      return go object
+    if (type object) is 'string'
+      return go ['"', object, '"'].join("")
+    if (type object) is 'function'
+      # this "ans =" is ugly, but gives proper behavior
+      return go ["ans = ", object.toString()].join("")
+    if (type object) is 'object'
+      # see all key/values, instead of plain [object Object]
+      str = "{"
+      for key, value of object
+        str += "#{key}: '#{value}', "
+      str = str.substring(0, str.length-2)
+      str += "}"
+      return go str, 'coffee'
+    else
+      return print object
 
   objecty = (name, value, x, y, height, boxContainer) ->
     color = typeColor value
@@ -95,7 +118,7 @@ $ ->
         'fill': color
         'cursor': 'pointer'
       .click ->
-        print value
+        typeGo value
 
   window.classy = (name, obj={}, opts={}) ->
     length = _(obj).keys().length
