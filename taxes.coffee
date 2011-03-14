@@ -17,10 +17,6 @@ $ ->
     receiptGroup: ["agency", "bureau", "category", "subcategory"]
     showChange: 0
     showExtra: 0
-    function: 0
-    subfunction: 0
-    category: 0
-    subcategory: 0
   
   type =
     budgetAccount: "getBudgetAccount/"
@@ -69,25 +65,24 @@ $ ->
       print 'Done.'
     )
  
-  paramIncluded = (paramName, base, typeKey) ->
+  paramList = (paramName, base, typeKey) ->
     #Returns api call for each value of parameter
     #assumes no parameters have been specified from console
-    params = {}
     print paramName
-    print paramDefaults[paramName]
     for i in paramDefaults[paramName]
-      if paramName is "budgetGroup" or "receiptGroup"
+      print 'key: ' + i
+      params = {}
+      if paramName in ["budgetGroup", "receiptGroup"]
         #special case for totals
         paramName = "group"
       params[paramName] = i
       apiString = base + setType(typeKey) + setParams(params)
-      print apiString
       params = undefined
       return apiString
  
   getVariedParams = ->
     for i of variedParams
-      paramIncluded i
+      paramList i
 
   window.getTaxes = (typeName, params) ->
     print 'Loading taxes...'
@@ -104,21 +99,26 @@ $ ->
     for typeKey in _.keys(type)
       if (typeKey is "budgetTotal")
         #For totals, group object has specific name
-        apiString = paramIncluded("budgetGroup", base, typeKey)
+        apiString = paramList("budgetGroup", base, typeKey)
+        print 'bT: ' + apiString
         apis[apiString] = typeKey
+      ###
       else if (typeKey is "receiptTotal")
         #For totals, group object has specific name
-        apiString = paramIncluded("recieptGroup", base, typeKey)
+        apiString = paramList("receiptGroup", base, typeKey)
+        print 'rT: ' + apiString
         apis[apiString] = typeKey
       else if (typeKey is "taxRates")
-        apiString = paramIncluded("type", base, typeKey)
+        apiString = paramList("type", base, typeKey)
+        print 'tR: ' + apiString
         apis[apiString] = typeKey
       else
         #population, gdp, debt, inflation
         apiString = base + setType(typeKey) + setParams(params)
         apis[apiString] = typeKey
-    print apis
+      ###
     #for key, val of apis
+    #  print key
     #  getData(key, val, false)
     print '...'
   
