@@ -13,10 +13,10 @@ window.conns = {}
   selectShape = (i) ->
     if selected is false
       selected = i
-      shapes[i].attr "fill-opacity": 0.6
+      shapes[i].attr "stroke-opacity": 0.8
     else if i is selected
       selected = false
-      shapes[i].attr "fill-opacity": 0.1
+      shapes[i].attr "stroke-opacity": 0.2
     else
       createConn selected, i
 
@@ -30,7 +30,7 @@ window.conns = {}
       "fill-opacity" : 0.1
       "stroke" : color
       "stroke-width" : 1
-      "stroke-opacity" : 0.8
+      "stroke-opacity" : 0.2
     shapes[i].cid = i
     shapes[i].node.style.cursor = "move"
     shapes[i].hover (-> if i isnt selected then this.attr 'fill-opacity' : 0.3),

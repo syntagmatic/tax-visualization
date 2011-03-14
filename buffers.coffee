@@ -65,18 +65,56 @@ $ ->
       link x, y
     "Link up!"
 
-  window.objectShape = (name, props=[], x=50, y=50) ->
-    rect(x,y,150,24+50*props.length,12).attr
+  typeColor = (object) ->
+    if (type object) is 'number'
+      return '#185273'
+    if (type object) is 'function'
+      return '#5E781D'
+    if (type object) is 'object'
+      return '#DBAD3B'
+    if (type object) is 'array'
+      return '#9D7B8C'
+    if (type object) is 'string'
+      return '#D13535'
+    if (type object) is 'element'
+      return '#FF8C4C'
+    else
+      return '#444'
+
+        
+
+  window.classy = (name, obj={}, opts={}) ->
+    length = _(obj).keys().length
+
+    x = opts.x || 50
+    y = opts.y || 50
+    boxHeight = opts.boxHeight || 50
+    padding = opts.padding || 10
+
+    boxContainer = (boxHeight+2*padding)
+
+    # heading
+    rect( x, y, 150, 24+boxContainer*length, 12).attr
       fill: "#222"
       stroke: "#333"
     text(x+75,y+12,name).attr
       'font-size': 14
       'fill': '#fff'
-    for prop, i in props
-      shape x+15, y+28+50*i, 120, 30
-      text(x+75,y+43+50*i,prop).attr
+
+    # each property
+    i = 0
+    for key, value of obj
+      color = typeColor value
+      shape(x+15, y+28+boxContainer*i, 120, boxHeight).attr
+        'fill': color
+        'stroke': color
+      text(x+75,y+43+boxContainer*i,key).attr
         'font-size': 14
         'fill': '#fff'
+      text(x+75,y+63+boxContainer*i,type value).attr
+        'font-size': 14
+        'fill': color
+      i++
 
   window.chart = ->
     values = []
