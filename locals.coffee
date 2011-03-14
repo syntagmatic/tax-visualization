@@ -32,6 +32,25 @@ do ->
   # jquery
   window.background = (color) -> $('body').css {background: color}
 
+  # underscore
+  window.type = (object) ->
+    if _.isArray(object)
+      return "array"
+    if _.isElement(object)
+      return "element"
+    if _.isNull(object)
+      return "null"
+    if _.isNaN(object)
+      return "NaN"
+    if _.isDate(object)
+      return "date"
+    if _.isArguments(object)
+      return "arguments"
+    if _.isRegExp(object)
+      return "RegExp"
+    else
+      return typeof object
+
   # raphael
   window.circle = (x,y,r) ->
     paper.circle(x,y,r)
