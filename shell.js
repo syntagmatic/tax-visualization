@@ -83,7 +83,7 @@ function inputKeydown(e) {
     // don't do anything; allow the shift-enter to insert a line break as normal
   } else if (e.keyCode == 13) { // enter
     // execute the input on enter
-    try { go(); } catch(er) { alert(er); };
+    try { go(_in.value, 'coffee'); } catch(er) { alert(er); };
     // remove tab complete results
     $('.tabcomplete').remove()
     setTimeout(function() { _in.value = ""; }, 0); // can't preventDefault on input, so clear it later
@@ -661,8 +661,9 @@ function printError(er)
     println(er, "error"); // Because security errors in Moz /only/ have toString.
 }
 
-function go(s)
+function go(s,lang)
 {
+  var lang = lang || "javascript"
   _in.value = question = s ? s : _in.value;
 
   if (question == "")
@@ -679,11 +680,13 @@ function go(s)
   recalculateInputHeight();
   printQuestion(question);
 
-  // Use CoffeeScript Compiler
-  question = CoffeeScript.compile(question);
-  // Remove wrapping closure
-  question = question.substring(14)
-  question = question.substring(0,question.length-16);
+  if (lang === "coffee") {
+    // Use CoffeeScript Compiler
+    question = CoffeeScript.compile(question);
+    // Remove wrapping closure
+    question = question.substring(14)
+    question = question.substring(0,question.length-16);
+  }
 
 
   if (_win.closed) {

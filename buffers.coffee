@@ -80,8 +80,45 @@ $ ->
       return '#FF8C4C'
     else
       return '#444'
+    
+  typeGo = (object) ->
+    # used to enter javascript into the console from elsewhere
+    # this is all quite hacky
+    if (type object) is 'array'
+      return go '[' + object + ']'
+    if (type object) is 'number'
+      return go object
+    if (type object) is 'string'
+      return go ['"', object, '"'].join("")
+    if (type object) is 'function'
+      # this "ans =" is ugly, but gives proper behavior
+      return go ["ans = ", object.toString()].join("")
+    if (type object) is 'object'
+      # see all key/values, instead of plain [object Object]
+      str = "{"
+      for key, value of object
+        str += "#{key}: '#{value}', "
+      str = str.substring(0, str.length-2)
+      str += "}"
+      return go str, 'coffee'
+    else
+      return print object
 
-        
+  objecty = (name, value, x, y, height, boxContainer) ->
+    color = typeColor value
+    shape(x, y, 130, height).attr
+      'fill': color
+      'stroke': color
+    text(x+65, y+15, name).attr
+      'font-size': 14
+      'fill': '#fff'
+    text(x+65, y+35, type value)
+      .attr
+        'font-size': 14
+        'fill': color
+        'cursor': 'pointer'
+      .click ->
+        typeGo value
 
   window.classy = (name, obj={}, opts={}) ->
     length = _(obj).keys().length
@@ -97,24 +134,16 @@ $ ->
     rect( x, y, 150, 24+boxContainer*length, 12).attr
       fill: "#222"
       stroke: "#333"
-    text(x+75,y+12,name).attr
+    text(x+75, y+12, name).attr
       'font-size': 14
       'fill': '#fff'
 
     # each property
     i = 0
     for key, value of obj
-      color = typeColor value
-      shape(x+15, y+28+boxContainer*i, 120, boxHeight).attr
-        'fill': color
-        'stroke': color
-      text(x+75,y+43+boxContainer*i,key).attr
-        'font-size': 14
-        'fill': '#fff'
-      text(x+75,y+63+boxContainer*i,type value).attr
-        'font-size': 14
-        'fill': color
+      objecty(key, value, x+padding, y+28+boxContainer*i, boxHeight, boxContainer)
       i++
+    name
 
   window.chart = ->
     values = []
@@ -211,15 +240,13 @@ $ ->
         print "help 'functions'"
         print "help 'navigation'"
       when 'examples'
-        print "# Splatter canvas with circles"
-        print "splat 50 "
-        print "# Make a spiral"
-        print "spiral 75 "
-        print "# Clear the canvas"
-        print "clear()"
-        print "grid(40)"
         print "c = circle(200,200,50).fill('lavender')"
-        print "c.draggable()"
+        print "splat 50 "
+        print "clear()"
+        print "spiral 75 "
+        print "punchcard 20, 20"
+        print "network 20, 20"
+        print "grid(40)"
       when 'functions'
         print "f = (x,y) -> x*y"
         print "f(2,3)"
@@ -227,4 +254,4 @@ $ ->
       when 'navigation'
         print "# Mouse wheel to zoom."
         print "# Grab background to pan."
-        print "# Drag and drop to move shapes."
+        #print "# Drag and drop to move shapes."

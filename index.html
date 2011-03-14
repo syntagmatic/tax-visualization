@@ -89,7 +89,9 @@ path("M10 10L90 90")
 
 <span># sets</span>
 st = set()
-st.push circle(x,y,r)
+st.push circle(30,50,10).fill('blue')
+st.push circle(50,90,10).fill('red')
+st.translate(50,50)
   </pre>
 
   <p>CoffeeScript Cheat Sheet<br/>
@@ -118,14 +120,46 @@ circles = (sh.circ(25*x,200) for x in [1..10])
 
   <p>Math</p>
   <pre class="code">
-sin pi/6 <span># 0.49999 ~ 1/2</span>
-acos 1/2 <span># 1.04719 ~ pi/3</span>
-random() <span># generate random number, 0-1</span>
-abs -5 <span># 5</span>
-pow(x,3) <span># x^3</span>
+sin pi/6  <span># 0.49999 ~ 1/2</span>
+acos 1/2  <span># 1.04719 ~ pi/3</span>
+random()  <span># generate random number, 0-1</span>
+abs -5    <span># 5</span>
+pow(x,3)  <span># x^3</span>
 floor 4.5 <span># 4</span>
-ceil 5.2 <span># 6</span>
+ceil 5.2  <span># 6</span>
   </pre>
+
+  <p>Connect Shapes<br/>
+  <small><a href="http://www.connectshapes.com/">Original</a></small></p>
+  <pre class="code">
+<span># create a shape</span>
+shape(x, y, width, height)
+link(int, int)
+
+<span># Example: Create three shapes.
+# Link 0 to 1, and 1 to 2</span>
+shape 50, 50, 10, 10 
+shape 200, 150, 40, 40 
+shape 400, 50, 30, 30 
+link 0, 1 
+link 1, 2 
+
+<span># Classy, takes an object and creates
+# a graphical interface for its properties</span>
+classy(name, object, options)
+
+<span># Example: Classy</span>
+classy 'My Object',
+  f: (x) -> 2*x
+  n: 5
+  str: "the quick brown fox"
+  nan: NaN
+  blah: {car: 'buggy', horn: 'french'}
+  huh: [4,5,'pop','bug']
+  elem: $('body')[0]
+  null: null
+  </pre>
+
   <p>Data Visualization Competition</p>
   <pre class="code">
 <span># get all data</span>
@@ -175,8 +209,6 @@ subfunction/subcategory:string
   # If the type is a receipt, use category or subcategory.</span>
   <span># Population, inflation, gdp and debt param: year
   # TaxRates params: year, type</span>
-
-
   </pre>
  
 </div><!--tutorial-->
