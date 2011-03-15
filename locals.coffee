@@ -129,15 +129,6 @@ do ->
   window.grid = (ticwidth) ->
     return axis "100%", "100%", ticwidth
 
-  # duration syntactic sugar
-  Raphael.el.anim = (obj) ->
-    if (obj.duration != undefined)
-      duration = obj.duration
-      delete obj.duration
-      this.animate(obj, duration)
-    else
-      this.animate(obj)
-
   attrs = ['cursor', 'cx', 'cy', 'fill', 'font', 'height',
            'href', 'opacity', 'path', 'r', 'rotation', 'rx', 'ry', 'scale',
            'src', 'stroke', 'target', 'title', 'translation', 'width',
@@ -148,10 +139,21 @@ do ->
             'stroke-linejoin', 'stroke-miterlimit', 'stroke-opacity',
             'text-anchor']
 
+  toCamel = (str)->
+    str.replace(/(\-[a-z])/g, `function($1){return $1.toUpperCase().replace('-','');}`)
+
   # shorthand for changing attributes
   #    circle(25,25,5).fill("red")
   for attr in attrs
     do (attr) ->
+      Raphael.el[attr] = (value) ->
+        obj = {}
+        obj[attr] = value
+        this.attr obj
+
+  for attr in attrs2
+    do (attr) ->
+      attr = toCamel attr
       Raphael.el[attr] = (value) ->
         obj = {}
         obj[attr] = value

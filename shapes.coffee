@@ -6,9 +6,6 @@ window.conns = {}
 
   # shapes
 
-  createShape = (x=50,y=50,width=50,height=50) ->
-    shapes.push this.rect(x, y, width, height, 3)
-    newShape(shapes.length-1)
     
   selectShape = (i) ->
     if selected is false
@@ -18,13 +15,14 @@ window.conns = {}
       selected = false
       shapes[i].attr "stroke-opacity": 0.2
     else
-      createConn selected, i
+      selectConn selected, i
 
   destroyShape = (i) ->
     # TODO
 
-  newShape = (i) ->
-    color = Raphael.getColor()
+  createShape = (x=50,y=50,width=50,height=50,color=Raphael.getColor()) ->
+    i = shapes.length
+    shapes.push this.rect(x, y, width, height, 3)
     shapes[i].attr
       "fill" : color
       "fill-opacity" : 0.1
@@ -37,6 +35,12 @@ window.conns = {}
                     (-> if i isnt selected then this.attr 'fill-opacity' : 0.1)
     shapes[i].click ->
       selectShape i
+      bb1 = shapes[i].getBBox()
+      for b, conn of conns[i]
+        circle(bb1.x+(bb1.width), bb1.y+(bb1.height/2), 4)
+          .attr({ fill: color, stroke: 0 })
+          .animateAlong shapes[conn].line.attrs.path, 600, ->
+            this.remove()
     conns[i] = {}
     shapes[i]
   
@@ -54,7 +58,6 @@ window.conns = {}
     connObj = shapes[conn]
     connObj.line.remove()
     delete conns[a][b]
-    delete conns[b][a]
 
   syncConnections = (a) ->
     for b of conns[a]
@@ -62,19 +65,17 @@ window.conns = {}
       shapes[conn].line.remove()
       shapes[conn] = drawConn(shapes[a],shapes[b],"#eee")
 
-
   # links
 
   createConn = (a,b, connColor = "#eee") ->
     i = shapes.length
-    shapes.push(drawConn(shapes[a],shapes[b],connColor))
+    shapes.push(drawConn(a,b,connColor))
     conns[a][b] = i
-    conns[b][a] = i
     paper.safari()
 
   drawConn = (a, b, color) ->
-    bb1 = a.getBBox()
-    bb2 = b.getBBox()
+    bb1 = shapes[a].getBBox()
+    bb2 = shapes[b].getBBox()
     path = ["M", bb1.x+(bb1.width), bb1.y+(bb1.height/2),
             "Q", (2*bb1.x+1.5*bb1.width+bb2.x)/3, bb1.y+bb1.height/2, (bb1.x+bb1.width+bb2.x)/2, (bb1.y+bb2.y+bb1.height)/2,
             "Q", (bb1.x+1.5*bb1.width+2*bb2.x)/3, bb2.y+bb2.height/2, bb2.x, bb2.y+(bb2.height/2)].join(",")

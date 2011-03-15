@@ -106,9 +106,7 @@ $ ->
 
   objecty = (name, value, x, y, height, boxContainer) ->
     color = typeColor value
-    shape(x, y, 130, height).attr
-      'fill': color
-      'stroke': color
+    shape(x, y, 130, height, color)
     text(x+65, y+15, name).attr
       'font-size': 14
       'fill': '#fff'
