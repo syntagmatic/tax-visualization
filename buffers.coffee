@@ -245,8 +245,8 @@ $ ->
         print "clear()"
         print "spiral 75 "
         print "punchcard 20, 20"
-        print "network 20, 20"
-        print "grid(40)"
+        print "network()"
+        print "grid 40"
       when 'functions'
         print "f = (x,y) -> x*y"
         print "f(2,3)"

@@ -9,6 +9,7 @@
 <script type="text/javascript" src="shell.js"></script>
 <script type="text/javascript" src="raphael.js"></script>
 <script type="text/javascript" src="raphael-zpd.js"></script>
+<script type="text/javascript" src="icons.js"></script>
 <script type="text/javascript" src="coffee-script.js"></script>
 <script type="text/coffeescript" src="shapes.coffee"></script>
 <script type="text/coffeescript" src="locals.coffee"></script>
@@ -92,6 +93,25 @@ st = set()
 st.push circle(30,50,10).fill('blue')
 st.push circle(50,90,10).fill('red')
 st.translate(50,50)
+  </pre>
+
+  <p>Color</p>
+  <pre>
+<span># 12 colored bars</span>
+a = []
+for i in [1..12]
+  a[i] = rect 40, 40*i, 200, 10
+  a[i].fill getColor()
+  </pre>
+
+  <p>Icons</p>
+  <pre>
+<span># Display all iconts</span>
+i = 0
+for key, value of icon
+  text(i, 200, key).stroke 'aliceblue'
+  path(value).translate(i, 230).stroke 'aliceblue'
+  i += 40
   </pre>
 
   <p>CoffeeScript Cheat Sheet<br/>
