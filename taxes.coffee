@@ -73,8 +73,7 @@ $ ->
       if typeof data == 'string'
         xml = stringToXml(data)
       window.items = xml.getElementsByTagName('item')
-      print paramInfo
-      #mapTaxes(xml.getElementsByTagName('item'), paramInfo)
+      mapTaxes(xml.getElementsByTagName('item'), paramInfo)
       if (show)
         $(window).trigger 'got_items'
       print 'Done.'
@@ -154,7 +153,6 @@ $ ->
     if not taxes[typeName][0]?
       taxes[typeName] = []
     #TODO: map with multiple params 
-    print params
     if params is "group"
       if not taxes[typeName][params]?
         taxes[typeName][params] = []
