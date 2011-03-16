@@ -63,7 +63,7 @@ $ ->
       x = round 99*random()
       y = round 99*random()
       link x, y
-    "Link up!"
+    "Click around for glitchy fun!"
 
   typeColor = (object) ->
     if (type object) is 'number'
@@ -238,7 +238,7 @@ $ ->
         print "help 'functions'"
         print "help 'navigation'"
       when 'examples'
-        print "c = circle(200,200,50).fill('lavender')"
+        print "circle(200,200,50).fill('lavender')"
         print "splat 50 "
         print "clear()"
         print "spiral 75 "

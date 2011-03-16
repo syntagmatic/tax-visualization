@@ -25,21 +25,21 @@ window.conns = {}
     shapes.push this.rect(x, y, width, height, 3)
     shapes[i].attr
       "fill" : color
-      "fill-opacity" : 0.1
+      "fill-opacity" : 0.3
       "stroke" : color
       "stroke-width" : 1
-      "stroke-opacity" : 0.2
+      "stroke-opacity" : 0.3
     shapes[i].cid = i
     shapes[i].node.style.cursor = "move"
-    shapes[i].hover (-> if i isnt selected then this.attr 'fill-opacity' : 0.3),
-                    (-> if i isnt selected then this.attr 'fill-opacity' : 0.1)
+    shapes[i].hover (-> if i isnt selected then this.attr 'fill-opacity' : 0.5),
+                    (-> if i isnt selected then this.attr 'fill-opacity' : 0.3)
     shapes[i].click ->
       selectShape i
       bb1 = shapes[i].getBBox()
       for b, conn of conns[i]
         circle(bb1.x+(bb1.width), bb1.y+(bb1.height/2), 4)
           .attr({ fill: color, stroke: 0 })
-          .animateAlong shapes[conn].line.attrs.path, 600, ->
+          .animateAlong shapes[conn].line.attrs.path, 1200, ->
             this.remove()
     conns[i] = {}
     shapes[i]
