@@ -5,13 +5,12 @@ $ ->
   $(window).bind 'got_items', ->
     showTaxes()
   
-  # Data Vis Competition
   window.defaults =
     year: [1984..2015]
     type: [0..3]
     sortby: [0..3] #don't care about this yet
     sortdir: false #don't care about this yet
-    income: 5000000
+    income: 5000000 #can't deal with this yet
     filing: [0..3]
     budgetGroup: ["agency", "bureau", "function", "subfunction"]
     receiptGroup: ["agency", "bureau", "category", "subcategory"]
@@ -30,14 +29,18 @@ $ ->
     debt: ["year"]
 
   type =
+    ###
     budgetAccount: "getBudgetAccount/"
+    ###
     budgetTotal: "getBudgetAggregate/"
+    ###
     receiptAccount: "getReceiptAccount/"
     receiptTotal: "getReceiptAggregate/"
     population: "getPopulation/"
     inflation: "getInflation/"
     gdp: "getGDP/"
     debt: "getDebt/"
+    ###
     taxRates: "getTaxRates/"
 
   query = (key, val, counter) ->
@@ -66,13 +69,11 @@ $ ->
 
   getData = (api, paramInfo, show) ->
     Ajax.get(api, (data) ->
-      print api
       xml = data
       if typeof data == 'string'
         xml = stringToXml(data)
       window.items = xml.getElementsByTagName('item')
-      print paramInfo
-      #mapTaxes(xml.getElementsByTagName('item'), paramInfo)
+      mapTaxes(xml.getElementsByTagName('item'), paramInfo)
       if (show)
         $(window).trigger 'got_items'
       print 'Done.'
@@ -93,6 +94,7 @@ $ ->
         params[paramName] = i
         apiList[paramName].push base + setType(typeKey) + setParams(params)
         params = undefined
+      # Here it is breaking; params are being remembered for incorrect apis
     return apiList
  
   getVariedParams = ->
@@ -112,17 +114,16 @@ $ ->
     #Get a data from a list of all api calls
     print 'Loading all taxes, please wait...'
     base = "http://www.whatwepayfor.com/api/"
+    i = 0
     for typeKey in _.keys(type)
       apiList = paramList(defaultAttribs[typeKey], base, typeKey)
       for attrib of apiList
         #map type and attributes to api 
         for api in apiList[attrib]
-          apis[api] = [typeKey, attrib]
-          print apis[api][0]
-        print 'bigger ' + apis[api][0]
-    for api of apis
-      print apis[api][0]
-      #getData(api, apis[api], false)
+          apis[i] = [api, typeKey, attrib]
+          i++
+    for a of apis
+      getData(_.first(apis[a]), _.rest(apis[a]), false)
     print '...'
   
   # Shortcut functions
@@ -156,9 +157,11 @@ $ ->
       if not taxes[typeName][params]?
         taxes[typeName][params] = []
       obj = mapAttribs items
+      print 'mapping ' + typeName + ', ' + params
       taxes[typeName][params].push obj
     else
       obj = mapAttribs items
+      print 'mapping ' + typeName
       taxes[typeName].push obj
   
   mapAttribs = (items) ->
