@@ -1,6 +1,6 @@
 do ->
   paper = Raphael("canvas", $('#canvas').width(), $('#canvas').height())
-  window.zpd = new RaphaelZPD(paper, { zoom: true, pan: true, drag: false})
+  window.zpd = new RaphaelZPD(paper, { zoom: true, pan: false, drag: false})
   paper.ZPDPanTo 360, 0
   window.paper = paper
   width = "100%"
@@ -166,13 +166,21 @@ do ->
     this.ox = this.attr("cx")
     this.oy = this.attr("cy")
   move = (dx, dy) ->
-    # move will be called with dx and dy
-    this.attr({cx: this.ox + dx, cy: this.oy + dy})
+    # this is not quite right-- but getting closer
+    if zoomCurrent > 0
+      this.attr({cx: this.ox + dx/log(zoomCurrent), cy: this.oy + dy/log(zoomCurrent)})
+    else if zoomCurrent < 0
+      this.attr({cx: this.ox + dx*log(-zoomCurrent), cy: this.oy + dy*log(-zoomCurrent)})
+    else
+      this.attr({cx: this.ox + dx, cy: this.oy + dy})
   up = ->
     # restoring state
   Raphael.el.draggable = ->
     this.drag(move,start,up)
 
+  window.draggable = (object) ->
+    object.drag(move,start,up)
+  
   # associates size with color
   # for bubble charts, takes values 0-32
   Raphael.el.bubble = (value) ->

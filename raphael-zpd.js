@@ -65,7 +65,7 @@ RaphaelZPD = function(raphaelPaper, o) {
     me.stateTarget = null;
     me.stateOrigin = null;
     me.stateTf = null;
-    me.zoomCurrent = 0;
+    window.zoomCurrent = 0;
 
     if (o) {
 		for (key in o) {
@@ -152,13 +152,14 @@ RaphaelZPD = function(raphaelPaper, o) {
 
         if (delta > 0) {
             if (me.opts.zoomThreshold) 
-                if (me.opts.zoomThreshold[1] <= me.zoomCurrent) return;
-            me.zoomCurrent++;
+                if (me.opts.zoomThreshold[1] <= zoomCurrent) return;
+            zoomCurrent++;
         } else {
             if (me.opts.zoomThreshold)
-                if (me.opts.zoomThreshold[0] >= me.zoomCurrent) return;
-            me.zoomCurrent--;
+                if (me.opts.zoomThreshold[0] >= zoomCurrent) return;
+            zoomCurrent--;
         }
+        console.log(zoomCurrent);
 
 		var z = 1 + delta; // Zoom factor: 0.9/1.1
 
