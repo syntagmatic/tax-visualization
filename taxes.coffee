@@ -60,10 +60,18 @@ $ ->
     for key, val of params
       paramString += query(key, val, i)
       i++
-    if not params? #default calls year
+    if not params? #default calls year and income
       paramString += query("year", "2010", 0)
-    else if not _.include(_.keys(params), "year") #if year was not included
-      paramString += query("year", "2010", 1)
+      paramString += query("income", "50000", 1)
+      paramString += query("showChange", 1, 1)
+      paramString += query("showExtra", 1, 1)
+    else
+      if not _.include(_.keys(params), "income") #if income was not included
+        paramString += query("income", "50000", 1)
+      if not _.include(_.keys(params), "showChange")
+        paramString += query("showChange", 1, 1)
+      if not _.include(_.keys(params), "showExtra")
+        paramString += query("showExtra", 1, 1)
     return paramString
 
   setType = (typeName) ->
@@ -80,6 +88,8 @@ $ ->
 
   getData = (api, paramInfo, show) ->
     Ajax.get(api, (data) ->
+      print api
+      print paramInfo[1]
       xml = data
       if typeof data == 'string'
         xml = stringToXml(data)
@@ -96,6 +106,7 @@ $ ->
     #assumes no parameters have been specified from console
     for paramName in paramNames
       for i in defaults[paramName]
+        #TODO: do boolean includes with multiple params
         params = {}
         if paramName in ["budgetGroup", "receiptGroup"]
           #special case for totals
@@ -113,6 +124,7 @@ $ ->
     base = "http://www.whatwepayfor.com/api/"
     if !taxTypes[typeName]
       typeName = "budgetAccount"
+    #TODO: update input of typeName
     api  = base + setType(typeName) + setParams(params)
     getData(api, typeName, true)
     print '...'
@@ -201,6 +213,7 @@ $ ->
 
   getItemHeader = (type) ->
     str = "<tr>"
+    print type[0]
     for key in _.keys(type[0])
       str += "<th>" + key + "</th>"
     str += "</tr>"
