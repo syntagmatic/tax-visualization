@@ -28,20 +28,18 @@ $ ->
     gdp: ["year"]
     debt: ["year"]
 
-  type =
-    ###
+  taxTypes =
     budgetAccount: "getBudgetAccount/"
-    ###
+  ###
     budgetTotal: "getBudgetAggregate/"
-    ###
     receiptAccount: "getReceiptAccount/"
     receiptTotal: "getReceiptAggregate/"
     population: "getPopulation/"
     inflation: "getInflation/"
     gdp: "getGDP/"
     debt: "getDebt/"
-    ###
     taxRates: "getTaxRates/"
+  ###
 
   query = (key, val, counter) ->
     if counter is 0
@@ -62,7 +60,7 @@ $ ->
     return paramString
 
   setType = (typeName) ->
-    typeString = type[typeName]
+    typeString = taxTypes[typeName]
     taxes.type = typeName
     taxes[typeName] = {}
     return typeString
@@ -102,9 +100,9 @@ $ ->
       paramList i
 
   window.getTaxes = (typeName, params) ->
-    print 'Loading taxes...'
+    print 'Loading ' + typeName + '...'
     base = "http://www.whatwepayfor.com/api/"
-    if !type[typeName]
+    if !taxTypes[typeName]
       typeName = "budgetAccount"
     api  = base + setType(typeName) + setParams(params)
     getData(api, typeName, true)
@@ -115,7 +113,7 @@ $ ->
     print 'Loading all taxes, please wait...'
     base = "http://www.whatwepayfor.com/api/"
     i = 0
-    for typeKey in _.keys(type)
+    for typeKey in _.keys(taxTypes)
       apiList = paramList(defaultAttribs[typeKey], base, typeKey)
       for attrib of apiList
         #map type and attributes to api 
@@ -156,20 +154,16 @@ $ ->
     if params is "group"
       if not taxes[typeName][params]?
         taxes[typeName][params] = []
-      obj = mapAttribs items
-      print 'mapping ' + typeName + ', ' + params
-      taxes[typeName][params].push obj
+      mapAttribs items, taxes[typeName][params]
     else
-      obj = mapAttribs items
-      print 'mapping ' + typeName
-      taxes[typeName].push obj
+      mapAttribs items, taxes[typeName]
   
-  mapAttribs = (items) ->
-    obj = {}
+  window.taxesObject = {}
+  mapAttribs = (items, typeObject) ->
     for item, i in items
       for a in [0...numItemAttributes i]
-        obj[nabItem('name',i,a)] = nabItem('value',i,a)
-    return obj
+        taxesObject[nabItem('name',i,a)] = nabItem('value',i,a)
+      #typeObject.push obj
 
   numItemAttributes = (account) ->
     return items.item(account).attributes.length
