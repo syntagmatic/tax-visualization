@@ -28,6 +28,10 @@ $ ->
     gdp: ["year"]
     debt: ["year"]
 
+  defaultLabels =
+    type: ["All", "Mandatory", "Discretionary", "Net_Interest"]
+    filing: ["Single", "Married_Jointly", "Married_Seperate", "Head_of_Household"]
+
   ###
   taxTypes =
     budgetAccount: "getBudgetAccount/"
@@ -68,6 +72,12 @@ $ ->
     taxes[typeName] = {}
     return typeString
 
+  getValueLabel = (paramName, i) ->
+    if defaultLabels[paramName]?
+      return defaultLabels[paramName][i]
+    else
+      return i
+
   getData = (api, paramInfo, show) ->
     Ajax.get(api, (data) ->
       xml = data
@@ -90,18 +100,14 @@ $ ->
         if paramName in ["budgetGroup", "receiptGroup"]
           #special case for totals
           paramName = "group"
-        if not apiList[paramName]?
-          apiList[paramName] = []
+        valueLabel = getValueLabel(paramName, i)
+        if not apiList[valueLabel]?
+          apiList[valueLabel] = []
         params[paramName] = i
-        apiList[paramName].push base + setType(typeKey) + setParams(params)
+        apiList[valueLabel].push base + setType(typeKey) + setParams(params)
         params = undefined
-      # Here it is breaking; params are being remembered for incorrect apis
     return apiList
  
-  getVariedParams = ->
-    for i of variedParams
-      paramList i
-
   window.getTaxes = (typeName, params) ->
     print 'Loading ' + typeName + '...'
     base = "http://www.whatwepayfor.com/api/"
@@ -152,22 +158,19 @@ $ ->
     typeName = callInfo[0]
     params = callInfo[1]
     print params
-    if not taxes[typeName][0]?
-      taxes[typeName] = []
-    #TODO: map with multiple params 
-    if params is "group"
-      if not taxes[typeName][params]?
-        taxes[typeName][params] = []
-      mapAttribs items, taxes[typeName][params]
-    else
-      mapAttribs items, taxes[typeName]
+    if not taxes[typeName]?
+      taxes[typeName] = {}
+    groupNames = _.flatten(defaults.budgetGroup, defaults.receiptGroup]
+    if not taxes[typeName][params]?
+      taxes[typeName][params] = []
+    for item, i in items
+      taxes[typeName][params].push mapAttribs(items, i)
   
   window.taxesObject = {}
-  mapAttribs = (items, typeObject) ->
-    for item, i in items
-      for a in [0...numItemAttributes i]
-        taxesObject[nabItem('name',i,a)] = nabItem('value',i,a)
-      #typeObject.push taxesObject
+  mapAttribs = (items, i) ->
+    for a in [0...numItemAttributes i]
+      taxesObject[nabItem('name',i,a)] = nabItem('value',i,a)
+    return taxesObject
 
   numItemAttributes = (account) ->
     return items.item(account).attributes.length
