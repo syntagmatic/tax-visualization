@@ -3,7 +3,7 @@ $ ->
   window.taxes = {}
   window.apis = {}
   $(window).bind 'got_items', ->
-    showTaxes()
+    showTaxes(data)
   
   window.defaults =
     year: [1984..2015]
@@ -28,9 +28,9 @@ $ ->
     gdp: ["year"]
     debt: ["year"]
 
+  ###
   taxTypes =
     budgetAccount: "getBudgetAccount/"
-  ###
     budgetTotal: "getBudgetAggregate/"
     receiptAccount: "getReceiptAccount/"
     receiptTotal: "getReceiptAggregate/"
@@ -40,6 +40,9 @@ $ ->
     debt: "getDebt/"
     taxRates: "getTaxRates/"
   ###
+
+  taxTypes =
+    budgetTotal: "getBudgetAggregate/"
 
   query = (key, val, counter) ->
     if counter is 0
@@ -73,7 +76,7 @@ $ ->
       window.items = xml.getElementsByTagName('item')
       mapTaxes(xml.getElementsByTagName('item'), paramInfo)
       if (show)
-        $(window).trigger 'got_items'
+        $(window).trigger('got_items', [paramInfo[0]])
       print 'Done.'
     )
  
@@ -148,6 +151,7 @@ $ ->
     # Call info is type, param
     typeName = callInfo[0]
     params = callInfo[1]
+    print params
     if not taxes[typeName][0]?
       taxes[typeName] = []
     #TODO: map with multiple params 
@@ -163,7 +167,7 @@ $ ->
     for item, i in items
       for a in [0...numItemAttributes i]
         taxesObject[nabItem('name',i,a)] = nabItem('value',i,a)
-      #typeObject.push obj
+      #typeObject.push taxesObject
 
   numItemAttributes = (account) ->
     return items.item(account).attributes.length
