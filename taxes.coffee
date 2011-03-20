@@ -157,17 +157,15 @@ $ ->
     # Call info is type, param
     typeName = callInfo[0]
     params = callInfo[1]
-    print params
     if not taxes[typeName]?
       taxes[typeName] = {}
-    groupNames = _.flatten(defaults.budgetGroup, defaults.receiptGroup]
     if not taxes[typeName][params]?
       taxes[typeName][params] = []
     for item, i in items
-      taxes[typeName][params].push mapAttribs(items, i)
+      taxes[typeName][params].push mapAttribs(i)
   
-  window.taxesObject = {}
-  mapAttribs = (items, i) ->
+  mapAttribs = (i) ->
+    taxesObject = {}
     for a in [0...numItemAttributes i]
       taxesObject[nabItem('name',i,a)] = nabItem('value',i,a)
     return taxesObject
@@ -182,10 +180,16 @@ $ ->
     if (_.isUndefined(typeObj))
       # showTaxes works for allTaxes or specific calls
       typeObj = taxes.type
-    str = "<table>" + getItemHeader(typeObj)
-    for i in [0...numAttributes(typeObj)]
-      str += getItemRow(typeObj, i)
-    str += "</table>"
+    str = ''
+    for attrib of typeObj
+      str += "<table>" + getItemHeader typeObj[attrib][0]
+      ###
+      for curAttrib in attrib
+        curObj = typeObj[attrib][curAttrib]
+        for i in [0...numAttributes(curObj)]
+          str += getItemRow(curObj, i)
+      ###
+      str += "</table>"
     printTaxes str
 
   getItemRow = (type, i) ->
