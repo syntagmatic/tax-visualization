@@ -10,7 +10,7 @@ $ ->
     type: [0..3]
     sortby: [0..3] #don't care about this yet
     sortdir: false #don't care about this yet
-    income: 5000000 #can't deal with this yet
+    income: 50000
     filing: [0..3]
     budgetGroup: ["agency", "bureau", "function", "subfunction"]
     receiptGroup: ["agency", "bureau", "category", "subcategory"]
@@ -65,8 +65,8 @@ $ ->
       paramString += query("income", "50000", 1)
       paramString += query("showChange", 1, 1)
       paramString += query("showExtra", 1, 1)
-    else
-      if not _.include(_.keys(params), "income") #if income was not included
+    else #include income, showChange and showExtra
+      if not _.include(_.keys(params), "income")
         paramString += query("income", "50000", 1)
       if not _.include(_.keys(params), "showChange")
         paramString += query("showChange", 1, 1)
@@ -88,8 +88,6 @@ $ ->
 
   getData = (api, paramInfo, show) ->
     Ajax.get(api, (data) ->
-      print api
-      print paramInfo[1]
       xml = data
       if typeof data == 'string'
         xml = stringToXml(data)
@@ -192,29 +190,36 @@ $ ->
     if (_.isUndefined(typeObj))
       # showTaxes works for allTaxes or specific calls
       typeObj = taxes.type
-    str = ''
+    str = "<table>"
     for attrib of typeObj
-      str += "<table>" + getItemHeader typeObj[attrib][0]
-      ###
-      for curAttrib in attrib
-        curObj = typeObj[attrib][curAttrib]
-        for i in [0...numAttributes(curObj)]
-          str += getItemRow(curObj, i)
-      ###
-      str += "</table>"
+      if attrib in _.flatten([defaults.budgetGroup, defaults.receiptGroup])
+        #Groups should have a new table
+        str += "</table><table>" + getItemHeader typeObj[attrib][0]
+        str += getItemBody attrib, typeObj
+        str += "</table>"
+      else
+        str += getItemBody attrib, typeObj
+    str += "</table>"
     printTaxes str
 
-  getItemRow = (type, i) ->
+  getItemBody = (attrib, typeObj) ->
+    str = ''
+    #TODO: make a check for if attrib is an object
+    for i in [0...numAttributes(typeObj[attrib])]
+      curObj = typeObj[attrib][i]
+      str += getItemRow(curObj)
+    return str
+
+  getItemRow = (type) ->
     str = "<tr>"
-    for value in _.values(type[i])
+    for value in _.values(type)
       str += "<td>" + value + "</td>"
     str += "</tr>"
     return str
 
   getItemHeader = (type) ->
     str = "<tr>"
-    print type[0]
-    for key in _.keys(type[0])
+    for key in _.keys(type)
       str += "<th>" + key + "</th>"
     str += "</tr>"
     return str
