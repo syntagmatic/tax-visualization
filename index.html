@@ -30,6 +30,12 @@
   </div>
   <div id="input_wrap">
     <textarea id="input" wrap="off" onkeydown="inputKeydown(event)" rows="1"></textarea>
+    <script src="ace/ace.js" type="text/javascript" charset="utf-8"></script>
+    <script>
+    $(function(){
+        var editor = ace.edit("input");
+    });
+    </script>
   </div>
 </div>
 <div id="buttons">
