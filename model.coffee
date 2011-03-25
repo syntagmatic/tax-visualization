@@ -81,7 +81,7 @@ $ ->
     rect = Rects.create
       x : x
       y : y
-      w : w
-      h : h
+      width : w
+      height : h
       r : r
     new RectView model : rect
