@@ -78,6 +78,12 @@ h1 {
   border-right: 1px solid #333;
   z-index: 10;
 }
+#console pre {
+  margin: 0;
+}
+.ace_gutter {
+  display: none;
+}
 #tutorial {
   max-height: 600px;
   overflow: auto;
