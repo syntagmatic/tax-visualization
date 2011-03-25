@@ -1,6 +1,6 @@
 do ->
   paper = Raphael("canvas", $('#canvas').width(), $('#canvas').height())
-  window.zpd = new RaphaelZPD(paper, { zoom: true, pan: false, drag: false})
+  window.zpd = new RaphaelZPD(paper, { zoom: true, pan: true, drag: false})
   paper.ZPDPanTo 360, 0
   window.paper = paper
   width = "100%"
