@@ -4,8 +4,10 @@
 <meta charset="utf-8">
 <title>Raphaël Playground in CoffeeScript</title>
 <link rel="stylesheet" href="style.css" type="text/css" media="screen">
-<script type="text/javascript" src="underscore.js"></script>
 <script type="text/javascript" src="jquery.js"></script>
+<script type="text/javascript" src="underscore.js"></script>
+<script src="js/backbone.js" type="text/javascript" charset="utf-8"></script>
+<script src="js/backbone-localstorage.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" src="shell.js"></script>
 <script type="text/javascript" src="eve.js"></script>
 <script type="text/javascript" src="raphael.js"></script>
@@ -14,12 +16,14 @@
 <script type="text/javascript" src="coffee-script.js"></script>
 <script type="text/coffeescript" src="shapes.coffee"></script>
 <script type="text/coffeescript" src="locals.coffee"></script>
+<script type="text/coffeescript" src="model.coffee"></script>
 <script type="text/coffeescript" src="raffi.coffee"></script>
 <script type="text/coffeescript" src="buffers.coffee"></script>
 <script type="text/coffeescript" src="taxes.coffee"></script>
 <script src="dvc.ajax.js"></script>
 </head>
 <body onload="init()">
+
 <div id="console">
   <div id="output">
     <div class="print">
@@ -33,15 +37,31 @@
     </script>
   </div>
 </div>
+
 <div id="buttons">
   <button id="clear" type="button">Clear</button>
   <button id="worlds" type="button">Toggle World</button>
   <button id="tut" type="button">Tutorial</button>
 </div>
+
 <div id="canvas"></div>
+
+<div id="dashboard" style="float:right;width:200px;margin:10px;position:relative;z-index:15;">
+  <a href="#" class="create">Create</a><br/>
+  <div class="props">
+    <script type="text/template" id="input-element">
+      <%= key %>:<br/> <input type="text" name="<%= key %>" value="<%= value %>" /><br/>
+    </script>
+    <script type="text/template" id="slider-element">
+      <%= key %>:<br/> <input type="range"name="<%= key %>" value="<%= value %>" min="0" max="<%= max %>" step="<%= step %>"/><br/>
+    </script>
+  </div>
+</div>
+
 <div id="tables">
   <div>Nothing here!  Try getTaxes()</div>
 </div>
+
 <div id="text">
   <textarea id="code"></textarea>
   <div id="tutorial">

@@ -54,8 +54,8 @@ do ->
   # raphael
   window.circle = (x,y,r) ->
     paper.circle(x,y,r)
-  window.rect = (x,y,w,h,r) ->
-    paper.rect(x,y,w,h,r)
+# window.rect = (x,y,w,h,r) ->
+#   paper.rect(x,y,w,h,r)
   window.ellipse = (x,y,rx,ry) ->
     paper.ellipse(x,y,rx,ry)
   window.image = (url,x,y,w,h) ->
