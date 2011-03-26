@@ -159,7 +159,6 @@ RaphaelZPD = function(raphaelPaper, o) {
                 if (me.opts.zoomThreshold[0] >= zoomCurrent) return;
             zoomCurrent--;
         }
-        console.log(zoomCurrent);
 
 		var z = 1 + delta; // Zoom factor: 0.9/1.1
 
