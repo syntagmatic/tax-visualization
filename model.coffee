@@ -1,6 +1,8 @@
 $ ->
 
-  window.Rect = Backbone.Model.extend
+  # shapes
+
+  Rect = Backbone.Model.extend
     defaults:
       'x': 100
       'y': 100
@@ -14,11 +16,39 @@ $ ->
       'stroke-opacity': 1
       'cursor': 'auto'
 
-  window.RectList = Backbone.Collection.extend
+  RectList = Backbone.Collection.extend
     model: Rect
     localStorage: new Store("rects")
 
-  window.Rects = new RectList
+  window.rects = new RectList
+
+  # tools
+
+  MorphTool = Backbone.Model.extend
+    defaults:
+      x: 0
+      y: 0
+      visible: false
+    display: (x, y) ->
+      @set visible: true
+      @render(x,y)
+    render: (x, y) ->
+      paper.path(this.icon).translate(x,y).attr
+        'stroke': 'yellow'
+        'stroke-width': 3
+
+  Resizer = MorphTool.extend
+    icon: icon.resize
+        
+  Rotator = MorphTool.extend
+    icon: icon.rotate
+
+  Translator = MorphTool.extend
+    icon: icon.translate
+      
+  window.resizer = new Resizer
+  window.rotator = new Rotator
+  window.translator = new Translator
 
   window.RectView = Backbone.View.extend
     events:
@@ -42,8 +72,7 @@ $ ->
     inputTemplate: _.template($('#input-element').html())
     sliderTemplate: _.template($('#slider-element').html())
     select: (model) ->
-      old = this.selected
-      this.selected = model
+      @selected = model
 
       attrs = model.toJSON()
       html = ""
@@ -65,12 +94,20 @@ $ ->
         else
           html += this.inputTemplate({key:key,value:value})
 
-      this.$('.props').html(html)
-      this.$('.props input[type=text]').change () ->
+      x = @selected.get "x"
+      y = @selected.get "y"
+      width = @selected.get "width"
+      height = @selected.get "height"
+      resizer.display(x+width, y+height)
+      rotator.display(x+width, y)
+      translator.display(x+width/2-5, y+height/2-5)
+
+      @$('.props').html(html)
+      @.$('.props input[type=text]').change () ->
         key = $(this).attr('name')
         value = $(this).val()
         model.view.alter key, value
-      this.$('.props input[type=range]').change () ->
+      @$('.props input[type=range]').change () ->
         key = $(this).attr('name')
         value = parseFloat $(this).val()
         model.view.alter key, value
@@ -78,7 +115,7 @@ $ ->
   window.Dashboard = new DashboardView
 
   window.rect  = (x,y,w,h,r) ->
-    rect = Rects.create
+    rect = rects.create
       x : x
       y : y
       width : w

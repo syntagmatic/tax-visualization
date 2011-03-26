@@ -130,7 +130,7 @@ do ->
     return axis "100%", "100%", ticwidth
 
   attrs = ['cursor', 'cx', 'cy', 'fill', 'font', 'height',
-           'href', 'opacity', 'path', 'r', 'rotation', 'rx', 'ry', 'scale',
+           'href', 'opacity', 'path', 'r', 'rotation', 'rx', 'ry',
            'src', 'stroke', 'target', 'title', 'translation', 'width',
            'x', 'y']
 
