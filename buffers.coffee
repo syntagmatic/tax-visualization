@@ -129,7 +129,7 @@ $ ->
     boxContainer = (boxHeight+2*padding)
 
     # heading
-    rect( x, y, 150, 24+boxContainer*length, 12).attr
+    paper.rect( x, y, 150, 24+boxContainer*length, 12).attr
       fill: "#222"
       stroke: "#333"
     text(x+75, y+12, name).attr

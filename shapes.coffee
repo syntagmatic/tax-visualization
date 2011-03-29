@@ -22,7 +22,7 @@ window.conns = {}
 
   createShape = (x=50,y=50,width=50,height=50,color=Raphael.getColor()) ->
     i = shapes.length
-    shapes.push this.rect(x, y, width, height, 3)
+    shapes.push paper.rect(x, y, width, height, 3)
     shapes[i].attr
       "fill" : color
       "fill-opacity" : 0.3
