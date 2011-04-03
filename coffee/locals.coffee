@@ -1,6 +1,6 @@
 do ->
   paper = Raphael("canvas", $('#canvas').width(), $('#canvas').height())
-  window.zpd = new RaphaelZPD(paper, { zoom: true, pan: true, drag: false})
+  window.zpd = new RaphaelZPD(paper, { zoom: true, pan: true, drag: true})
   paper.ZPDPanTo 360, 0
   window.paper = paper
   width = "100%"
@@ -167,10 +167,12 @@ do ->
     this.oy = this.attr("cy")
   move = (dx, dy) ->
     # this is not quite right-- but getting closer
+    zoom = log(zoomCurrent)/log(2)
+    neg_zoom = log(-zoomCurrent)/log(2)
     if zoomCurrent > 0
-      this.attr({cx: this.ox + dx/log(zoomCurrent), cy: this.oy + dy/log(zoomCurrent)})
+      this.attr({cx: this.ox + dx/zoom, cy: this.oy + dy/zoom})
     else if zoomCurrent < 0
-      this.attr({cx: this.ox + dx*log(-zoomCurrent), cy: this.oy + dy*log(-zoomCurrent)})
+      this.attr({cx: this.ox + dx*neg_zoom, cy: this.oy + dy*neg_zoom})
     else
       this.attr({cx: this.ox + dx, cy: this.oy + dy})
   up = ->
