@@ -20,7 +20,7 @@
 <script type="text/coffeescript" src="coffee/raffi.coffee"></script>
 <script type="text/coffeescript" src="coffee/buffers.coffee"></script>
 <script type="text/coffeescript" src="coffee/taxes.coffee"></script>
-<script src="dvc.ajax.js"></script>
+<script src="js/dvc.ajax.js"></script>
 </head>
 <body onload="init()">
 
@@ -40,7 +40,6 @@
 
 <div id="buttons">
   <button id="clear" type="button">Clear</button>
-  <button id="worlds" type="button">Toggle World</button>
   <button id="tut" type="button">Tutorial</button>
 </div>
 
@@ -197,58 +196,6 @@ classy 'My Object',
   elem: $('body')[0]
   null: null
   </pre>
-
-  <p>Data Visualization Competition</p>
-  <pre class="code">
-<span># get all data</span>
-getAllTaxes()
-<span># then show some data</span>
-showTaxes taxes.budgetAccount
-<span># get a 2d list of an attribute</span>
-getColumn taxes.budgetAccount, "agency"
-
-<span># or, just get a little bit of data</span>
-getTaxes("budgetAccount")
-
-<span># other data to get</span>
-getPopulation()
-getInflation()
-getGdp()
-getDebt()
-getTaxRates()
-
-<span># Some notes </span>
-
-<span># type attributes</span>
-budgetAccount
-budgetTotal
-receiptAccount
-receiptTotal
-population
-inflation
-gdp
-debt
-taxRates
-
-<span># parameter defaults</span>
-year:num, 
-type: 0 - 3, 
-sortdir: 0 - 1, 
-income:num, 
-filing: 0 - 4, 
-group: agency, bureau, function/category, subfunction/subcategory, 
-showChange: 0 - 1, 
-showExtra: 0 -1, 
-function/category:string, 
-subfunction/subcategory:string
-  
-  <span># If the type is a total, it is recommended to specify a group.
-  # If the type is a budget, use function or subfuction.
-  # If the type is a receipt, use category or subcategory.</span>
-  <span># Population, inflation, gdp and debt param: year
-  # TaxRates params: year, type</span>
-  </pre>
- 
 </div><!--tutorial-->
 </div>
 </body></html>
